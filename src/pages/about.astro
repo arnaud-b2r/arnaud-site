@@ -2,28 +2,248 @@
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
-<MainLayout>
-  <h1>À propos</h1>
+<MainLayout title="À propos — Arnaud Borderiou" description="Responsable marketing B2B, je transforme des sujets complexes en contenus utiles. Découvrez mon parcours, mes compétences et ce qui m'anime.">
 
-  <p>
-    Bienvenue dans mes Notes de bord, un espace personnel dans lequel je partage mes réflexions, analyses et retours d’expérience autour du marketing, de la tech et du numérique.
-  </p>
+  <div class="about-wrapper">
 
-  <p>
-    Ce site me permet d’aborder principalement des sujets liés à la technologie, au marketing et à la transformation numérique, ainsi que, plus ponctuellement, mes lectures, mes voyages et d’autres sujets qui me passionnent.
-  </p>
+    <!-- Bloc identité : photo + accroche -->
+    <div class="identity">
+      <div class="identity-photo">
+        <!--
+          Remplace "photo-profil.jpg" par le nom de ton fichier image
+          à placer dans /public/images/
+          Si pas encore de photo, tu peux commenter ce bloc et décommenter le placeholder ci-dessous
+        -->
+        <img
+          src="/images/photo-profil.jpg"
+          alt="Arnaud Borderiou"
+          width="160"
+          height="160"
+        />
 
-  <p>Je m'appelle Arnaud, j'ai 39 ans et je travaille dans le marketing depuis assez longtemps pour avoir vu l'essor des réseaux sociaux, la montée de la data et l'irruption de l'IA — trois révolutions qui ont chacune redistribué les cartes du métier. </p>
-  
-<p>Aujourd'hui, j'exerce dans une entreprise spécialisée en B2B, dans l'univers de l'IT, de la tech et de la gestion documentaire. Mon quotidien, c'est aider des équipes commerciales à mieux vendre, produire des contenus utiles et penser des stratégies adaptées à des acheteurs professionnels qui n'ont ni le temps ni la patience d'être mal adressés. </p>
+        <!--
+          PLACEHOLDER — à utiliser tant que la photo n'est pas prête.
+          Décommente ce bloc et commente le <img> ci-dessus.
 
- <p>Ce site est né d'une conviction simple : le marketing mérite d'être discuté hors des silos. Trop souvent cantonné à sa verticale — B2B d'un côté, B2C de l'autre, digital encore ailleurs — il gagne à être pensé dans sa globalité. C'est ce que j'essaie de faire ici : croiser les regards, suivre l'actualité tech et IA avec un oeil de praticien, et partager ce qui me semble réellement utile plutôt que ce qui fait du bruit. </p>
+        <div class="photo-placeholder" aria-hidden="true">AB</div>
+        -->
+      </div>
 
- <p>En dehors du travail, je lis beaucoup. Des romans — Murakami, Ken Follett, Agatha Raisin — mais aussi des BD et des mangas, une passion qui remonte à l'enfance, au temps béni des mercredis après-midi devant la télé. La BD franco-belge d'un côté, les shonen de l'autre : deux cultures graphiques que j'ai toujours consommées en parallèle sans jamais choisir. Je marche, je randonne, je voyage dès que possible — le Japon, l'Angleterre, la Scandinavie, les sumos — et je suis de près l'actualité tech, pas comme un geek, mais comme quelqu'un qui veut comprendre ce qui change vraiment dans nos façons de travailler et de consommer.</p>
+      <div class="identity-text">
+        <h1>Arnaud Borderiou</h1>
+        <p class="tagline">Responsable marketing B2B — dématérialisation, IT, téléphonie, cybersécurité</p>
+        <a
+          href="https://www.linkedin.com/in/arnaud-borderiou"
+          class="linkedin-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Voir mon profil LinkedIn
+        </a>
+      </div>
+    </div>
 
- <p>Ce site est le prolongement de tout ça : un espace hybride, entre réflexion professionnelle et curiosité personnelle, où j'espère que vous trouverez matière à penser — ou au moins à lire.</p>
+    <!-- Séparateur -->
+    <hr class="divider" />
 
- <p>Quelques partis pris d'écriture : j'ai glissé le Club Dorothée en filigrane ("mercredis après-midi devant la télé") sans le nommer explicitement, ce qui crée une connivence avec les lecteurs de ta génération sans fermer la porte aux autres. La partie pro est volontairement précise sur le contexte métier sans citer l'entreprise, ce qui laisse la page valable dans la durée. Et la conclusion boucle avec l'esprit du site tel qu'on l'avait défini ensemble.</p>
+    <!-- Bloc pro -->
+    <section class="about-section">
+      <h2>Ce que je fais</h2>
 
-  <p>— Arnaud Borderiou</p>
+      <p>
+        Je travaille dans le marketing B2B depuis assez longtemps pour avoir vu l'essor des réseaux sociaux,
+        la montée de la data et l'irruption de l'IA — trois révolutions qui ont chacune redistribué les cartes du métier.
+      </p>
+
+      <p>
+        Aujourd'hui, j'exerce dans une entreprise spécialisée dans les solutions aux professionnels :
+        dématérialisation des documents, informatique d'entreprise, téléphonie et cybersécurité.
+        Mon quotidien, c'est aider des équipes commerciales à mieux vendre, produire des contenus utiles,
+        et penser des stratégies adaptées à des acheteurs professionnels qui n'ont ni le temps ni la patience
+        d'être mal adressés.
+      </p>
+
+      <p>
+        Ce qui me distingue, c'est la capacité à rendre lisibles des sujets techniques souvent mal expliqués —
+        et à construire des contenus qui servent réellement les commerciaux plutôt que de rester dans les tiroirs.
+      </p>
+    </section>
+
+    <!-- Bloc éditorial -->
+    <section class="about-section">
+      <h2>Pourquoi ce site</h2>
+
+      <p>
+        Ce site est né d'une conviction simple : le marketing mérite d'être discuté hors des silos.
+        Trop souvent cantonné à sa verticale — B2B d'un côté, digital de l'autre — il gagne à être
+        pensé dans sa globalité. C'est ce que j'essaie de faire ici : croiser les regards, suivre
+        l'actualité tech et IA avec un œil de praticien, et partager ce qui me semble réellement
+        utile plutôt que ce qui fait du bruit.
+      </p>
+
+      <p>
+        Vous trouverez sur ce site des réflexions professionnelles, mais aussi des détours plus personnels —
+        voyages, lectures, passions. Les deux sont liés : c'est souvent en dehors du travail qu'on apprend
+        le mieux à regarder le monde différemment.
+      </p>
+    </section>
+
+    <!-- Bloc perso -->
+    <section class="about-section">
+      <h2>En dehors du bureau</h2>
+
+      <p>
+        Je lis beaucoup — des romans (Murakami, Ken Follett, la série Agatha Raisin), des BD franco-belges
+        et des mangas, deux cultures graphiques que j'ai toujours consommées en parallèle sans jamais choisir.
+        Je marche, je randonne, je voyage dès que possible — le Japon, l'Angleterre, la Scandinavie figurent
+        parmi mes destinations de prédilection. Et je suis de près l'actualité tech, pas comme un geek,
+        mais comme quelqu'un qui veut comprendre ce qui change vraiment dans nos façons de travailler.
+      </p>
+    </section>
+
+    <!-- Signature -->
+    <p class="signature">— Arnaud Borderiou, Angers</p>
+
+  </div>
+
+  <style>
+    /*
+      Conteneur principal de la page About.
+      On garde la même respiration que le reste du site.
+    */
+    .about-wrapper {
+      padding: 1rem 0 3rem;
+    }
+
+    /*
+      Bloc identité : photo à gauche, texte à droite.
+      On passe en colonne sur mobile.
+    */
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /*
+      Photo de profil circulaire.
+    */
+    .identity-photo img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(var(--accent), 0.2);
+      flex-shrink: 0;
+    }
+
+    /*
+      Placeholder textuel si la photo n'est pas encore disponible.
+    */
+    .photo-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(var(--accent), 0.1);
+      border: 3px solid rgba(var(--accent), 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: rgb(var(--accent));
+      flex-shrink: 0;
+    }
+
+    /*
+      Nom principal.
+    */
+    .identity-text h1 {
+      margin: 0 0 0.4rem 0;
+      font-size: 2rem;
+      line-height: 1.1;
+      color: rgb(var(--black));
+    }
+
+    /*
+      Tagline sous le nom.
+    */
+    .tagline {
+      margin: 0 0 0.75rem 0;
+      font-size: 1rem;
+      color: rgb(var(--gray));
+      line-height: 1.5;
+    }
+
+    /*
+      Lien LinkedIn discret — texte coloré, pas de bouton.
+    */
+    .linkedin-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgb(var(--accent));
+      text-decoration: none;
+    }
+
+    .linkedin-link:hover {
+      text-decoration: underline;
+    }
+
+    /*
+      Séparateur entre identité et contenu.
+    */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(var(--gray), 0.2);
+      margin: 0 0 2.5rem 0;
+    }
+
+    /*
+      Section de contenu : titre H2 + paragraphes.
+    */
+    .about-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .about-section h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: rgb(var(--black));
+    }
+
+    .about-section p {
+      margin: 0 0 1rem 0;
+      line-height: 1.8;
+      color: rgb(var(--gray-dark));
+      max-width: 680px;
+    }
+
+    /*
+      Signature finale.
+    */
+    .signature {
+      margin-top: 1rem;
+      font-style: italic;
+      color: rgb(var(--gray));
+      font-size: 0.95rem;
+    }
+
+    /*
+      Adaptation mobile.
+    */
+    @media (max-width: 600px) {
+      .identity {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+      }
+
+      .identity-text h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+
 </MainLayout>
