@@ -1,20 +1,125 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
+/* 
+  Génère les URLs statiques des articles.
+  Ici on ne passe plus le post complet en props : on passe seulement le slug.
+*/
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
+
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		props: post,
 	}));
 }
-type Props = CollectionEntry<'blog'>;
 
-const post = Astro.props;
+/* 
+  On récupère le slug dans l’URL.
+  Exemple : /blog/mon-premier-article/ -> slug = "mon-premier-article"
+*/
+const { slug } = Astro.params;
+
+/* 
+  On récupère tous les articles, puis on trie du plus récent au plus ancien.
+*/
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+/* 
+  On cherche l’article courant à partir du slug.
+*/
+const currentIndex = posts.findIndex((post) => post.id === slug);
+const post = currentIndex !== -1 ? posts[currentIndex] : null;
+
+/* 
+  Navigation entre articles :
+  - prevPost = article plus ancien
+  - nextPost = article plus récent
+*/
+const prevPost = currentIndex !== -1 ? posts[currentIndex + 1] || null : null;
+const nextPost = currentIndex !== -1 ? posts[currentIndex - 1] || null : null;
+
+/* 
+  Sécurité : si l’article n’existe pas, on interrompt proprement.
+*/
+if (!post) {
+	throw new Error(`Article introuvable pour le slug : ${slug}`);
+}
+
+/* 
+  On rend le contenu Markdown de l’article.
+*/
 const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
 	<Content />
+
+	{(prevPost || nextPost) && (
+		<div class="post-navigation">
+			{prevPost ? (
+				<a class="nav-link prev" href={`/blog/${prevPost.id}/`}>
+					← {prevPost.data.title}
+				</a>
+			) : (
+				<div></div>
+			)}
+
+			{nextPost ? (
+				<a class="nav-link next" href={`/blog/${nextPost.id}/`}>
+					{nextPost.data.title} →
+				</a>
+			) : (
+				<div></div>
+			)}
+		</div>
+	)}
 </BlogPost>
+
+<style>
+	.post-navigation {
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(var(--gray), 0.2);
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.nav-link {
+		max-width: 45%;
+		text-decoration: none;
+		font-weight: 500;
+		color: rgb(var(--gray-dark));
+		transition: color 0.2s ease;
+	}
+
+	.nav-link:hover {
+		color: rgb(var(--accent));
+	}
+
+	.prev {
+		text-align: left;
+	}
+
+	.next {
+		text-align: right;
+	}
+
+	@media (max-width: 720px) {
+		.post-navigation {
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.nav-link {
+			max-width: 100%;
+		}
+
+		.next {
+			text-align: left;
+		}
+	}
+</style>

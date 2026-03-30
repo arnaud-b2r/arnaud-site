@@ -1,114 +1,175 @@
 ---
-import { Image } from 'astro:assets';
+import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
+<MainLayout>
+	<section class="hero">
+		<p class="eyebrow">Archives</p>
+
+		<h1>Blog</h1>
+
+		<p class="intro">
+			Retrouve ici mes notes, réflexions et articles publiés sur Notes de bord,
+			autour de la tech, du marketing et du numérique.
+		</p>
+	</section>
+
+	<section class="posts-section">
+		<ul class="post-grid">
+			{posts.map((post) => (
+				<li class="post-card">
+					<a href={`/blog/${post.id}/`}>
+						<p class="post-date">
+							<FormattedDate date={post.data.pubDate} />
+						</p>
+
+						<h2 class="post-title">{post.data.title}</h2>
+
+						{post.data.description && (
+							<p class="post-description">{post.data.description}</p>
+						)}
+					</a>
+				</li>
+			))}
+		</ul>
+	</section>
+
+	<style>
+		/*
+		  Hero = bloc d’introduction de la page blog.
+		  Même logique visuelle que sur la home pour garder une cohérence.
+		*/
+		.hero {
+			padding: 1rem 0 2.5rem 0;
+		}
+
+		/*
+		  Eyebrow = petit libellé au-dessus du titre principal.
+		  Sert à contextualiser la page.
+		*/
+		.eyebrow {
+			margin: 0 0 0.75rem 0;
+			font-size: 0.9rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: rgb(var(--accent));
+		}
+
+		.hero h1 {
+			margin: 0 0 1rem 0;
+			font-size: 3rem;
+			line-height: 1.05;
+			color: rgb(var(--black));
+		}
+
+		.intro {
+			max-width: 720px;
+			margin: 0;
+			font-size: 1.05rem;
+			color: rgb(var(--gray));
+		}
+
+		/*
+		  post-grid = grille des cartes d’articles.
+		  Deux colonnes sur desktop, une seule sur mobile.
+		*/
+		.post-grid {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1.5rem;
+		}
+
+		/*
+		  post-card = carte individuelle d’un article.
+		  Fond blanc, bord discret, légère élévation au survol.
+		*/
+		.post-card {
+			border: 1px solid rgba(var(--gray), 0.18);
+			border-radius: 16px;
+			background: white;
+			transition:
+				transform 0.2s ease,
+				box-shadow 0.2s ease,
+				border-color 0.2s ease;
+		}
+
+		/*
+		  On met le premier article légèrement en avant.
+		*/
+		.post-card:first-child {
+			grid-column: 1 / -1;
+		}
+
+		.post-card:hover {
+			transform: translateY(-3px);
+			box-shadow: var(--box-shadow);
+			border-color: rgba(var(--accent), 0.25);
+		}
+
+		/*
+		  Le lien occupe toute la carte.
+		*/
+		.post-card a {
+			display: block;
+			padding: 1.4rem;
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.post-date {
+			margin: 0 0 0.65rem 0;
+			font-size: 0.92rem;
+			font-weight: 500;
+			color: rgb(var(--gray));
+		}
+
+		.post-title {
+			margin: 0 0 0.75rem 0;
+			font-size: 1.5rem;
+			line-height: 1.2;
+			color: rgb(var(--black));
+		}
+
+		.post-description {
+			margin: 0;
+			font-size: 1rem;
+			line-height: 1.6;
+			color: rgb(var(--gray-dark));
+		}
+
+		/*
+		  Mobile : une seule colonne et titre un peu réduit.
+		*/
+		@media (max-width: 720px) {
+			.hero {
+				padding: 0.5rem 0 2rem 0;
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
+
+			.hero h1 {
+				font-size: 2.3rem;
 			}
-			ul li {
-				width: calc(50% - 1rem);
+
+			.post-grid {
+				grid-template-columns: 1fr;
 			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
+
+			.post-card:first-child {
+				grid-column: auto;
 			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
+
+			.post-title {
+				font-size: 1.3rem;
 			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+		}
+	</style>
+</MainLayout>
