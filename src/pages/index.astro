@@ -3,98 +3,233 @@ import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout>
-<section class="coming-soon">
-  <div class="content">
-    <p class="eyebrow">Arnaud Borderiou</p>
+  <section class="home-grid">
+    <article class="featured-card">
+      <div class="featured-content">
+        <p class="meta">MISE À JOUR : 11 MARS 2026 • SITE PERSONNEL</p>
+        <h1>Site en cours de développement</h1>
+        <p class="excerpt">
+          Une nouvelle version du site arrive bientôt. En attendant, voici un aperçu
+          de l’univers à venir : notes, projets, découvertes et réflexions.
+        </p>
+        <a href="/about" class="read-more">En savoir plus</a>
+      </div>
 
-    <img src="/images/carnet-bord_logo.png" alt="Carnet de bord" class="logo" />
+      <div class="featured-visual">
+        <img src="/images/carnet-bord_logo.png" alt="Carnet de bord" class="featured-logo" />
+      </div>
+    </article>
 
-    <h1>Site en cours de développement</h1>
+    <div class="cards-grid">
+      <article class="post-card">
+        <div class="card-visual visual-blue">
+          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        </div>
+        <div class="card-body">
+          <p class="card-meta">NOTES • À VENIR</p>
+          <h2>Articles et billets</h2>
+          <p>
+            Des contenus autour du marketing, du numérique, de l’IA et d’autres sujets qui nourrissent la curiosité.
+          </p>
+          <a href="/blog" class="read-more">Lire la suite...</a>
+        </div>
+      </article>
 
-    <p class="subtitle">
-      Une nouvelle version du site arrive bientôt, patience, patience.
-    </p>
+      <article class="post-card">
+        <div class="card-visual visual-orange">
+          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        </div>
+        <div class="card-body">
+          <p class="card-meta">PROJETS • À VENIR</p>
+          <h2>Travaux et expérimentations</h2>
+          <p>
+            Une place pour montrer certaines réalisations, pistes de travail et expérimentations personnelles.
+          </p>
+          <a href="/about" class="read-more">Lire la suite...</a>
+        </div>
+      </article>
 
-    <p class="intro">
-      Merci de votre visite. Ce site est actuellement en construction.
-    </p>
-  </div>
-</section>
+      <article class="post-card">
+        <div class="card-visual visual-purple">
+          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        </div>
+        <div class="card-body">
+          <p class="card-meta">CARNETS • À VENIR</p>
+          <h2>Réflexions et observations</h2>
+          <p>
+            Des notes plus spontanées, des idées en construction et quelques fragments de parcours.
+          </p>
+          <a href="/blog" class="read-more">Lire la suite...</a>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="card-visual visual-red">
+          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        </div>
+        <div class="card-body">
+          <p class="card-meta">SITE • EN COURS</p>
+          <h2>Une base en train de se construire</h2>
+          <p>
+            Le site évolue progressivement : structure, identité visuelle et premiers contenus sont en préparation.
+          </p>
+          <a href="/" class="read-more">Lire la suite...</a>
+        </div>
+      </article>
+    </div>
+  </section>
 </MainLayout>
 
 <style>
-  * {
-    box-sizing: border-box;
+  .home-grid {
+    display: grid;
+    gap: 2rem;
   }
 
-  .coming-soon {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 2rem 1rem;
+  .featured-card {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     overflow: hidden;
-
-    background:
-      radial-gradient(circle at top left, rgba(255, 191, 163, 0.4), transparent 30%),
-      radial-gradient(circle at bottom right, rgba(200, 182, 255, 0.4), transparent 35%),
-      linear-gradient(135deg, #4f7cff 0%, #6a7cff 50%, #c8b6ff 100%);
-
-    color: white;
   }
 
-  .content {
-    width: min(700px, 100%);
-    padding: clamp(1.25rem, 4vw, 3rem);
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    text-align: center;
+  .featured-content {
+    padding: 2rem 2rem 2.25rem;
   }
 
-  .logo {
-    width: clamp(50px, 12vw, 70px);
-    height: auto;
-    margin-bottom: 1.5rem;
-    object-fit: contain;
-  }
-
-  .eyebrow {
-    font-size: 0.9rem;
+  .meta,
+  .card-meta {
+    margin: 0 0 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.7;
-    margin-bottom: 1rem;
+    color: #4d8df7;
   }
 
   h1 {
     margin: 0 0 1rem;
-    font-size: clamp(2rem, 6vw, 4.5rem);
-    line-height: 1.1;
-    color: white;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    color: #2f3438;
   }
 
-  .subtitle {
-    margin: 0 0 1rem;
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
+  .excerpt {
+    max-width: 58ch;
+    color: #5b636b;
+    font-size: 1.05rem;
   }
 
-  .intro {
-    margin: 0;
-    font-size: clamp(0.9rem, 2.2vw, 1rem);
-    opacity: 0.9;
+  .featured-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    background: #8899d8;
+    padding: 2rem;
   }
 
-  @media (max-width: 640px) {
-    .coming-soon {
-      padding: 1.5rem 0.75rem;
+  .featured-logo {
+    width: min(180px, 55%);
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .card-visual {
+    height: 190px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+  }
+
+  .visual-blue {
+    background: #6f79c8;
+  }
+
+  .visual-orange {
+    background: #f2a322;
+  }
+
+  .visual-purple {
+    background: #6c33e6;
+  }
+
+  .visual-red {
+    background: #c70000;
+  }
+
+  .card-logo {
+    width: 88px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .card-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.9rem;
+    line-height: 1.2;
+    color: #2f3438;
+  }
+
+  .post-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .card-body p {
+    color: #5b636b;
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #4d8df7;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .featured-card {
+      grid-template-columns: 1fr;
     }
 
-    .content {
-      padding: 1.5rem 1rem;
-      border-radius: 20px;
+    .featured-visual {
+      min-height: 240px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-content,
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .featured-visual {
+      padding: 1.5rem;
     }
   }
 </style>

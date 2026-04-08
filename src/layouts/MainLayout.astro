@@ -11,33 +11,28 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 <html lang="fr">
   <head>
     <BaseHead title={title} description={description} />
-<style is:global>
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
+    <style is:global>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
 
-  body {
-    min-width: 0;
-  }
+      main {
+        width: 100%;
+        margin: 0 auto;
+        padding: 3.75rem 1.25rem;
+      }
 
-  main {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
+      h1 {
+        margin-bottom: 1rem;
+      }
 
-  h1 {
-    margin-bottom: 1rem;
-  }
-
-  p {
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
-  }
-</style>
+      p {
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+      }
+    </style>
   </head>
   <body>
     <Header />
