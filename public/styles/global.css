@@ -5,10 +5,10 @@
 
 /* ------------------------------------------------------------
    1. IMPORTS TYPOGRAPHIQUES
-   - Roboto Serif : serif moderne pour les titres
-   - Roboto : sans-serif propre pour le corps de texte
+   - Lora : serif éditorial pour les titres (chaud, littéraire)
+   - Source Sans 3 : sans-serif clair pour le corps de texte
    ------------------------------------------------------------ */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400&family=Roboto+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@400;500;600&display=swap');
 
 /* ------------------------------------------------------------
    2. VARIABLES CSS
@@ -17,8 +17,8 @@
    ------------------------------------------------------------ */
 :root {
   /* Typographie */
-  --font-serif: 'Roboto Serif', Georgia, serif;
-  --font-sans: 'Roboto', system-ui, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Source Sans 3', system-ui, sans-serif;
 
   /* Tailles de police */
   --text-xs:   0.75rem;   /* 12px — métadonnées, tags */
@@ -35,34 +35,20 @@
   --leading-normal: 1.65;
   --leading-loose:  1.8;
 
-  /* -------------------------------------------------------
-     CHARTE GRAPHIQUE — Carnet de bord par Arnaud Borderiou
-     Validée avril 2026
-  ------------------------------------------------------- */
+  /* Palette principale — tons chauds éditoriaux */
+  --color-ink:       #1C1917;   /* quasi-noir chaud — texte principal */
+  --color-ink-muted: #57534E;   /* gris chaud — texte secondaire */
+  --color-ink-faint: #A8A29E;   /* gris clair — métadonnées */
 
-  /* Couleur principale — bleu encre (logo + titres + nav) */
-  --color-ink:       #1A3A4A;
-  --color-ink-muted: #6B6560;   /* gris chaud — texte secondaire */
-  --color-ink-faint: #9B9488;   /* gris clair — métadonnées */
+  --color-paper:     #FAFAF8;   /* fond général — blanc légèrement chaud */
+  --color-surface:   #FFFFFF;   /* surfaces de cartes */
+  --color-border:    #E7E5E4;   /* séparateurs */
+  --color-border-light: rgba(28, 25, 23, 0.07);
 
-  /* Fonds — ivoire chaud, jamais blanc pur */
-  --color-paper:   #FAFAF7;     /* fond général */
-  --color-surface: #FFFFFF;     /* surfaces de cartes */
-  --color-sand:    #EDE8E0;     /* surfaces secondaires, footer */
-
-  /* Bordures */
-  --color-border:       #D9D3C8;
-  --color-border-light: rgba(26, 58, 74, 0.07);
-
-  /* Accent principal — terre cuite (liens, CTA, soulignements actifs) */
-  --color-accent:       #E8714A;
-  --color-accent-light: #FDF0EB; /* fond teinté pour les tags */
-  --color-accent-dark:  #C05030;
-
-  /* Accent secondaire — vert jade (catégories voyage, nature, lectures) */
-  --color-jade:         #4A7C6F;
-  --color-jade-light:   #EAF2EF;
-  --color-jade-dark:    #2E5C52;
+  /* Couleur d'accent — brun doré éditorial */
+  --color-accent:    #8B6F47;
+  --color-accent-light: #F5EFE7; /* fond teinté pour les tags */
+  --color-accent-dark:  #6B5235;
 
   /* Espacements */
   --space-1:  0.25rem;

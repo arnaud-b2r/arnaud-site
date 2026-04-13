@@ -1,0 +1,104 @@
+---
+/**
+ * Footer.astro — charte validée avril 2026.
+ * Fond sable #EDE8E0, texte gris chaud, accent terre cuite au survol.
+ */
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <!-- Marque -->
+    <div class="footer-brand">
+      <span class="footer-name">Carnet de bord</span>
+      <span class="footer-copy">&copy; {year} Arnaud Borderiou</span>
+    </div>
+
+    <!-- Liens secondaires -->
+    <nav class="footer-nav" aria-label="Navigation secondaire">
+      <a href="/about">À propos</a>
+      <a href="/blog">Articles</a>
+      <a href="/rss.xml">RSS</a>
+      <a
+        href="https://www.linkedin.com/in/arnaud-borderiou/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LinkedIn
+      </a>
+    </nav>
+
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid #D9D3C8;
+    background: #EDE8E0;   /* sable — légèrement plus chaud que le fond ivoire */
+    padding: 2rem 0;
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .footer-name {
+    font-family: 'Roboto Serif', Georgia, serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1A3A4A;
+  }
+
+  .footer-copy {
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 0.75rem;
+    color: #9B9488;
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer-nav a {
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: #6B6560;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-nav a:hover {
+    color: #E8714A;
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0 1rem;
+    }
+
+    .footer-nav {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+</style>

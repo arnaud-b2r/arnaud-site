@@ -1,44 +1,51 @@
 ---
+/**
+ * MainLayout.astro
+ * Layout principal du site — utilisé par toutes les pages sauf les articles de blog.
+ * Intègre : BaseHead, Header, Footer, et le slot de contenu.
+ *
+ * Props :
+ * - title       : titre de la page (balise <title> + og:title)
+ * - description : description meta (og:description)
+ */
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="fr">
   <head>
     <BaseHead title={title} description={description} />
-    <style is:global>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-      }
 
-      main {
-        width: 100%;
-        margin: 0 auto;
-        padding: 3.75rem 1.25rem;
-      }
-
-      h1 {
-        margin-bottom: 1rem;
-      }
-
-      p {
-        line-height: 1.6;
-        margin-bottom: 1.2rem;
-      }
-    </style>
+    <!--
+      On importe global.css ici pour que toutes les variables
+      et styles de base soient disponibles sur toutes les pages.
+      BaseHead gère le reste (meta, favicon, og).
+    -->
+    <link rel="stylesheet" href="/styles/global.css" />
   </head>
+
   <body>
     <Header />
+
     <main>
-      <slot />
+      <div class="container">
+        <slot />
+      </div>
     </main>
+
     <Footer />
   </body>
 </html>

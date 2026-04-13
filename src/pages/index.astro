@@ -6,13 +6,12 @@ import MainLayout from '../layouts/MainLayout.astro';
   <section class="home-grid">
     <article class="featured-card">
       <div class="featured-content">
-        <p class="meta">MISE À JOUR : 11 MARS 2026 • SITE PERSONNEL</p>
-        <h1>Site en cours de développement</h1>
+        <p class="meta">MISE À JOUR : 13 AVRIL 2026 • MON CARNET DE BORD</p>
+        <h1>Bievenue sur le carnet de bord</h1>
         <p class="excerpt">
-          Une nouvelle version du site arrive bientôt. En attendant, voici un aperçu
-          de l’univers à venir : notes, projets, découvertes et réflexions.
+          Bienvenue ici ! Ce site démarre doucement avec deux premiers articles, comme un point de départ pour partager mes idées, mes découvertes et mes réflexions. Il va évoluer au fil du temps, au rythme de mes envies et de mes apprentissages. Merci de votre passage, et bonne lecture.
         </p>
-        <a href="/about" class="read-more">En savoir plus</a>
+       <!--  <a href="/about" class="read-more">En savoir plus</a>-->
       </div>
 
       <div class="featured-visual">
@@ -22,34 +21,34 @@ import MainLayout from '../layouts/MainLayout.astro';
 
     <div class="cards-grid">
       <article class="post-card">
-        <div class="card-visual visual-blue">
-          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        <div class="card-visual">
+          <img src="/images/ia.jpg" alt="Illustration IA" class="card-illustration" />
         </div>
         <div class="card-body">
-          <p class="card-meta">NOTES • À VENIR</p>
-          <h2>Articles et billets</h2>
+          <p class="card-meta">TECH</p>
+          <h2>IA, mars 2026 : quand la technologie devient un enjeu politique</h2>
           <p>
-            Des contenus autour du marketing, du numérique, de l’IA et d’autres sujets qui nourrissent la curiosité.
+            Mars 2026 restera une date charnière dans l'histoire de l'intelligence artificielle. En quelques semaines, OpenAI, Anthropic, Google et xAI ont tous sorti des mises à jour majeures Iaboosts, au point que la compétition entre modèles ressemble désormais moins à une course technologique qu'à une guerre d'influence.
           </p>
           <a href="/blog" class="read-more">Lire la suite...</a>
         </div>
       </article>
 
       <article class="post-card">
-        <div class="card-visual visual-orange">
-          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
+        <div class="card-visual">
+          <img src="/images/stockholm.jpg" alt="Illustration IA" class="card-illustration" />
         </div>
         <div class="card-body">
-          <p class="card-meta">PROJETS • À VENIR</p>
-          <h2>Travaux et expérimentations</h2>
+          <p class="card-meta">VOYAGE</p>
+          <h2>Stockholm en mars : le froid, le vasa et l'ombre de Fifi Brindacier</h2>
           <p>
-            Une place pour montrer certaines réalisations, pistes de travail et expérimentations personnelles.
+            Partir à Stockholm début mars, c'est accepter le deal scandinave : une lumière rasante et dorée en échange d'un manteau que l'on ne quitte pas. La ville, posée sur quatorze îles entre le lac Mälaren et la mer Baltique, impose d'emblée son rythme — calme, ordonné, étrangement apaisant pour qui vient de nos latitudes plus agitées.
           </p>
           <a href="/about" class="read-more">Lire la suite...</a>
         </div>
       </article>
 
-      <article class="post-card">
+     <!-- <article class="post-card">
         <div class="card-visual visual-purple">
           <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
         </div>
@@ -61,9 +60,9 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
           <a href="/blog" class="read-more">Lire la suite...</a>
         </div>
-      </article>
+      </article>-->
 
-      <article class="post-card">
+      <!--<article class="post-card">
         <div class="card-visual visual-red">
           <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
         </div>
@@ -75,7 +74,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
           <a href="/" class="read-more">Lire la suite...</a>
         </div>
-      </article>
+      </article>-->
     </div>
   </section>
 </MainLayout>
@@ -125,7 +124,6 @@ import MainLayout from '../layouts/MainLayout.astro';
     align-items: center;
     justify-content: center;
     min-height: 320px;
-    background: #8899d8;
     padding: 2rem;
   }
 
@@ -155,9 +153,18 @@ import MainLayout from '../layouts/MainLayout.astro';
     padding: 1rem;
   }
 
+ /* 
   .visual-blue {
     background: #6f79c8;
   }
+  */
+
+  .card-illustration {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
   .visual-orange {
     background: #f2a322;
