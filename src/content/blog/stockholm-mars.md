@@ -1,6 +1,8 @@
 ---
 title: "Stockholm en mars : le froid, le vasa et l'ombre de Fifi Brindacier"
 description: "Trois jours à Stockholm en mars pour découvrir Gamla Stan, le Vasa et l'âme scandinave — un voyage entre histoire, gastronomie nordique et douceur de vivre à la suédoise."
+heroImage: "/images/stockholm.jpg"
+category: "Voyage"
 pubDate: 2026-03-26
 ---
 

@@ -9,14 +9,14 @@ const currentPath = Astro.url.pathname;
         <img src="/images/carnet-bord_logo_blanc.png" alt="Logo" />
       </div>
       <div>
-        <span class="site-name">Carnet de bord</span>
-        <span class="site-sub">par Arnaud Borderiou</span>
+        <span class="site-name">Carnet de Bord</span>
+        <!--span class="site-sub">par Arnaud Borderiou</span-->
       </div>
     </a>
     <nav>
       <a href="/" aria-current={currentPath === "/" ? "page" : undefined}>Accueil</a>
-      <a href="/articles" aria-current={currentPath.startsWith("/articles") ? "page" : undefined}>Articles</a>
-      <a href="/a-propos" aria-current={currentPath === "/a-propos" ? "page" : undefined}>À propos</a>
+      <a href="/blog" aria-current={currentPath.startsWith("/articles") ? "page" : undefined}>Articles</a>
+      <a href="/about" aria-current={currentPath === "/about" ? "page" : undefined}>À propos</a>
     </nav>
   </div>
 </header>

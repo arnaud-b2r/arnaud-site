@@ -1,8 +1,9 @@
 ---
 title: "IA, mars 2026 : quand la technologie devient un enjeu politique"
-description: "Un tour d'horizon de l'actualité IA de mars 2026 : entre guerre des modèles, tensions éthiques et montée en puissance des infrastructures spécialisées, l'IA est devenue un enjeu bien au-delà de la technologie."
-heroImage: "./ia.jpg"
+description: "..."
 pubDate: 2026-03-27
+heroImage: "/images/ia.jpg"
+category: "Tech"
 ---
 
 Mars 2026 restera une date charnière dans l'histoire de l'intelligence artificielle. En quelques semaines, OpenAI, Anthropic, Google et xAI ont tous sorti des mises à jour majeures Iaboosts, au point que la compétition entre modèles ressemble désormais moins à une course technologique qu'à une guerre d'influence. Les benchmarks entre GPT-5.4, DeepSeek V4 et Claude 4.6 se sont resserrés à un niveau que même les experts n'anticipaient pas Gptbox, pendant qu'une étude révélait que les modèles open source n'ont plus que trois mois de retard sur les modèles propriétaires.
