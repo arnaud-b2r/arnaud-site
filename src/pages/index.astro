@@ -1,81 +1,59 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const recentPosts = posts.slice(0, 4);
 ---
 
 <MainLayout>
   <section class="home-grid">
+
     <article class="featured-card">
       <div class="featured-content">
-        <p class="meta">MISE À JOUR : 13 AVRIL 2026 • MON CARNET DE BORD</p>
+        <p class="meta">MON CARNET DE BORD</p>
         <h1>Bienvenue sur le carnet de bord</h1>
         <p class="excerpt">
-          Bienvenue ici ! Ce site démarre doucement avec deux premiers articles, comme un point de départ pour partager mes idées, mes découvertes et mes réflexions. Il va évoluer au fil du temps, au rythme de mes envies et de mes apprentissages. Merci de votre passage, et bonne lecture.
+          Bienvenue ici ! Ce site partage mes idées, mes découvertes et mes réflexions.
+          Il évolue au fil du temps, au rythme de mes envies et de mes apprentissages.
+          Merci de votre passage, et bonne lecture.
         </p>
-       <!--  <a href="/about" class="read-more">En savoir plus</a>-->
       </div>
-
       <div class="featured-visual">
         <img src="/images/carnet-bord_logo.png" alt="Carnet de bord" class="featured-logo" />
       </div>
     </article>
 
     <div class="cards-grid">
-      <article class="post-card">
-        <div class="card-visual">
-          <img src="/images/ia.jpg" alt="Illustration IA" class="card-illustration" />
-        </div>
-        <div class="card-body">
-          <p class="card-meta">TECH</p>
-          <h2>IA, mars 2026 : quand la technologie devient un enjeu politique</h2>
-          <p>
-            Mars 2026 restera une date charnière dans l'histoire de l'intelligence artificielle. En quelques semaines, OpenAI, Anthropic, Google et xAI ont tous sorti des mises à jour majeures Iaboosts, au point que la compétition entre modèles ressemble désormais moins à une course technologique qu'à une guerre d'influence.
-          </p>
-          <a href="/blog" class="read-more">Lire la suite...</a>
-        </div>
-      </article>
-
-      <article class="post-card">
-        <div class="card-visual">
-          <img src="/images/stockholm.jpg" alt="Illustration IA" class="card-illustration" />
-        </div>
-        <div class="card-body">
-          <p class="card-meta">VOYAGE</p>
-          <h2>Stockholm en mars : le froid, le vasa et l'ombre de Fifi Brindacier</h2>
-          <p>
-            Partir à Stockholm début mars, c'est accepter le deal scandinave : une lumière rasante et dorée en échange d'un manteau que l'on ne quitte pas. La ville, posée sur quatorze îles entre le lac Mälaren et la mer Baltique, impose d'emblée son rythme — calme, ordonné, étrangement apaisant pour qui vient de nos latitudes plus agitées.
-          </p>
-          <a href="/about" class="read-more">Lire la suite...</a>
-        </div>
-      </article>
-
-     <!-- <article class="post-card">
-        <div class="card-visual visual-purple">
-          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
-        </div>
-        <div class="card-body">
-          <p class="card-meta">CARNETS • À VENIR</p>
-          <h2>Réflexions et observations</h2>
-          <p>
-            Des notes plus spontanées, des idées en construction et quelques fragments de parcours.
-          </p>
-          <a href="/blog" class="read-more">Lire la suite...</a>
-        </div>
-      </article>-->
-
-      <!--<article class="post-card">
-        <div class="card-visual visual-red">
-          <img src="/images/carnet-bord_logo.png" alt="" class="card-logo" />
-        </div>
-        <div class="card-body">
-          <p class="card-meta">SITE • EN COURS</p>
-          <h2>Une base en train de se construire</h2>
-          <p>
-            Le site évolue progressivement : structure, identité visuelle et premiers contenus sont en préparation.
-          </p>
-          <a href="/" class="read-more">Lire la suite...</a>
-        </div>
-      </article>-->
+      {recentPosts.map((post) => (
+        <article class="post-card">
+          <a href={`/blog/${post.id}/`} class="card-link">
+            <div class="card-visual">
+              {post.data.heroImage
+                ? <img src={post.data.heroImage} alt={post.data.title} class="card-illustration" />
+                : <div class="card-placeholder"></div>
+              }
+              {post.data.category && (
+                <span class={`card-badge badge-${post.data.category.toLowerCase()}`}>
+                  {post.data.category}
+                </span>
+              )}
+            </div>
+            <div class="card-body">
+              <p class="card-date"><FormattedDate date={post.data.pubDate} /></p>
+              <h2>{post.data.title}</h2>
+              {post.data.description && <p class="card-desc">{post.data.description}</p>}
+              <span class="read-more-link">Lire la suite →</span>
+            </div>
+          </a>
+        </article>
+      ))}
     </div>
+
   </section>
 </MainLayout>
 
@@ -90,6 +68,7 @@ import MainLayout from '../layouts/MainLayout.astro';
     grid-template-columns: 1.3fr 1fr;
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
     overflow: hidden;
   }
 
@@ -97,34 +76,39 @@ import MainLayout from '../layouts/MainLayout.astro';
     padding: 2rem 2rem 2.25rem;
   }
 
-  .meta,
-  .card-meta {
+  .meta {
     margin: 0 0 1rem;
     font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #4d8df7;
+    color: #e8572a;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
   }
 
-  h1 {
+  .featured-content h1 {
     margin: 0 0 1rem;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
     line-height: 1.15;
-    color: #2f3438;
+    color: #1a3a4a;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-weight: 500;
   }
 
   .excerpt {
     max-width: 58ch;
     color: #5b636b;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
   }
 
   .featured-visual {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 320px;
+    min-height: 280px;
     padding: 2rem;
+    background: #f5f0e8;
   }
 
   .featured-logo {
@@ -136,92 +120,114 @@ import MainLayout from '../layouts/MainLayout.astro';
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .post-card {
     background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 0.5px solid #ddd5c5;
+    border-radius: 14px;
     overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .post-card:hover {
+    border-color: #e8572a;
+  }
+
+  .card-link {
+    display: block;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .card-link:hover {
+    text-decoration: none !important;
   }
 
   .card-visual {
+    position: relative;
     height: 190px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 1rem;
+    overflow: hidden;
+    background: #c9bfa8;
   }
-
- /* 
-  .visual-blue {
-    background: #6f79c8;
-  }
-  */
 
   .card-illustration {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-  .visual-orange {
-    background: #f2a322;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .visual-purple {
-    background: #6c33e6;
+  .card-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #c9bfa8;
   }
 
-  .visual-red {
-    background: #c70000;
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
   }
 
-  .card-logo {
-    width: 88px;
-    height: auto;
-    object-fit: contain;
-  }
+  .badge-tech      { background: #ddeaf2; color: #1a3a4a; }
+  .badge-voyage    { background: #faeada; color: #8a4a1a; }
+  .badge-marketing { background: #eaf2dd; color: #3a5a1a; }
 
   .card-body {
-    padding: 1.25rem 1.25rem 1.5rem;
+    padding: 1.1rem 1.25rem 1.4rem;
   }
 
-  h2 {
-    margin: 0 0 0.75rem;
-    font-size: 1.9rem;
-    line-height: 1.2;
-    color: #2f3438;
+  .card-date {
+    font-size: 0.8rem;
+    color: #a8997e;
+    margin: 0 0 6px;
   }
 
-  .post-card h2 {
-    font-size: 1.8rem;
-  }
-
-  .card-body p {
-    color: #5b636b;
-  }
-
-  .read-more {
-    display: inline-block;
-    margin-top: 0.5rem;
-    color: #4d8df7;
-    text-decoration: none;
+  .card-body h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    color: #1a3a4a;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
     font-weight: 500;
   }
 
-  .read-more:hover {
-    text-decoration: underline;
+  .card-desc {
+    font-size: 0.875rem;
+    color: #5a4e3c;
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .read-more-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #e8572a !important;
+    font-weight: 500;
+    text-decoration: none !important;
+    border-bottom: none !important;
   }
 
   @media (max-width: 900px) {
     .featured-card {
       grid-template-columns: 1fr;
     }
-
     .featured-visual {
-      min-height: 240px;
+      min-height: 200px;
     }
   }
 
@@ -229,14 +235,9 @@ import MainLayout from '../layouts/MainLayout.astro';
     .cards-grid {
       grid-template-columns: 1fr;
     }
-
     .featured-content,
     .card-body {
       padding: 1.25rem;
-    }
-
-    .featured-visual {
-      padding: 1.5rem;
     }
   }
 </style>
