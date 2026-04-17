@@ -1,4 +1,17 @@
 ---
+/**
+ * BlogPost.astro
+ * Layout utilisé par tous les articles de blog.
+ * Il reçoit les métadonnées de l'article (titre, date, image...)
+ * et les injecte dans la page via Astro.props.
+ *
+ * Props (transmises automatiquement depuis le frontmatter Markdown) :
+ * - title       : titre de l'article
+ * - description : meta description
+ * - pubDate     : date de publication
+ * - updatedDate : date de mise à jour (optionnelle)
+ * - heroImage   : image de couverture (optionnelle)
+ */
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
@@ -9,236 +22,287 @@ import Header from '../components/Header.astro';
 type Props = CollectionEntry<'blog'>['data'];
 
 /*
-  On récupère les données envoyées par l’article :
-  - title : titre
-  - description : meta description
-  - pubDate : date de publication
-  - updatedDate : date de mise à jour éventuelle
-  - heroImage : image d’en-tête éventuelle
+  On récupère les données envoyées par l'article via Astro.props.
+  updatedDate et heroImage sont optionnels — ils peuvent être absents
+  sur certains articles, d'où le "?" dans la définition du type.
 */
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="fr">
-	<head>
-		<BaseHead title={title} description={description} />
+  <head>
+    <!--
+      BaseHead gère tout ce qui est dans le <head> :
+      balises meta, og:, favicon, canonical URL, polices.
+      On lui passe le titre et la description de l'article.
 
-		<style>
-			/*
-			  main = conteneur principal de la page article.
-			  On garde la même logique de respiration que sur le reste du site.
-			*/
-			main {
-				max-width: 1100px;
-				margin: 0 auto;
-				padding: 3rem 1.5rem 4rem;
-			}
+      IMPORTANT : le bloc <style> Astro ne doit PAS être placé ici,
+      dans le <head>. Il doit toujours être à la racine du fichier,
+      après </html>. Sinon, esbuild l'interprète mal lors du build
+      et les styles n'arrivent pas en production.
+    -->
+    <BaseHead title={title} description={description} />
+  </head>
 
-			/*
-			  article = bloc global de l’article.
-			*/
-			article {
-				width: 100%;
-			}
+  <body>
+    <!-- Header commun à toutes les pages -->
+    <Header />
 
-			/*
-			  hero-image = zone de l’image de couverture.
-			  On garde une largeur confortable et un bon espace dessous.
-			*/
-			.hero-image {
-				margin-bottom: 2rem;
-			}
+    <main>
+      <article>
 
-			.hero-image img {
-				display: block;
-				width: 100%;
-				max-width: 100%;
-				height: auto;
-				border-radius: 16px;
-				box-shadow: var(--box-shadow);
-			}
+        <!--
+          hero-image : image de couverture de l'article.
+          On n'affiche ce bloc que si l'article a une heroImage définie.
+          Le composant <Image> d'Astro optimise automatiquement
+          l'image (compression, format WebP, lazy loading).
+        -->
+        <div class="hero-image">
+          {heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+        </div>
 
-			/*
-			  prose = zone de lecture.
-			  On limite la largeur pour garder un bon confort de lecture.
-			*/
-			.prose {
-				max-width: 760px;
-				margin: 0 auto;
-				color: rgb(var(--gray-dark));
-			}
+        <!--
+          prose : zone de lecture principale.
+          Elle contient le titre, la date, et le contenu Markdown
+          injecté via <slot />.
+        -->
+        <div class="prose">
 
-			/*
-			  title = bloc d’introduction de l’article :
-			  date, titre, ligne de séparation.
-			*/
-			.title {
-				margin-bottom: 2rem;
-				text-align: left;
-			}
+          <!--
+            title : bloc d'en-tête de l'article.
+            Contient la date de publication, le titre h1,
+            et une ligne de séparation.
+          -->
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={pubDate} />
+              {
+                /*
+                  On affiche la date de mise à jour uniquement
+                  si elle est renseignée dans le frontmatter Markdown.
+                */
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Dernière mise à jour le <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div>
 
-			/*
-			  Titre principal de l’article.
-			*/
-			.title h1 {
-				margin: 0 0 1rem 0;
-				font-size: 2.8rem;
-				line-height: 1.1;
-				color: rgb(var(--black));
-			}
+            <h1>{title}</h1>
+            <hr />
+          </div>
 
-			/*
-			  Date de publication.
-			*/
-			.date {
-				margin-bottom: 0.75rem;
-				font-size: 0.95rem;
-				color: rgb(var(--gray));
-			}
+          <!--
+            <slot /> est l'endroit où Astro injecte le contenu
+            de l'article Markdown. Tout ce qui est écrit dans
+            le fichier .md de l'article apparaît ici.
+          -->
+          <slot />
 
-			/*
-			  Date de mise à jour éventuelle.
-			*/
-			.last-updated-on {
-				margin-top: 0.25rem;
-				font-style: italic;
-			}
+        </div>
+      </article>
+    </main>
 
-			/*
-			  Ligne de séparation discrète.
-			*/
-			.title hr {
-				margin: 1.5rem 0 0 0;
-				border: none;
-				border-top: 1px solid rgba(var(--gray), 0.25);
-			}
-
-			/*
-			  Style du contenu Markdown injecté dans <slot />.
-			  On améliore la lisibilité globale.
-			*/
-			.prose :global(p) {
-				margin: 0 0 1.25rem 0;
-				line-height: 1.8;
-			}
-
-			.prose :global(h2) {
-				margin-top: 2.5rem;
-				margin-bottom: 1rem;
-				font-size: 1.8rem;
-				line-height: 1.2;
-				color: rgb(var(--black));
-			}
-
-			.prose :global(h3) {
-				margin-top: 2rem;
-				margin-bottom: 0.75rem;
-				font-size: 1.35rem;
-				line-height: 1.3;
-				color: rgb(var(--black));
-			}
-
-			.prose :global(ul),
-			.prose :global(ol) {
-				margin: 0 0 1.5rem 1.25rem;
-				padding: 0;
-			}
-
-			.prose :global(li) {
-				margin-bottom: 0.5rem;
-			}
-
-			.prose :global(a) {
-				color: rgb(var(--accent));
-				text-decoration: none;
-			}
-
-			.prose :global(a:hover) {
-				text-decoration: underline;
-			}
-
-			.prose :global(blockquote) {
-				margin: 1.5rem 0;
-				padding: 0.75rem 1rem;
-				border-left: 4px solid rgb(var(--accent));
-				background: rgba(var(--gray-light), 0.5);
-				color: rgb(var(--gray-dark));
-			}
-
-			.prose :global(img) {
-				max-width: 100%;
-				height: auto;
-				border-radius: 12px;
-			}
-
-			/*
-			  Adaptation mobile.
-			*/
-			@media (max-width: 720px) {
-				main {
-					padding: 2rem 1rem 3rem;
-				}
-
-				.title h1 {
-					font-size: 2.1rem;
-				}
-
-				.prose {
-					max-width: 100%;
-				}
-
-				.prose :global(p) {
-  				margin-bottom: 1.5rem; /* plus d’air */
-				}
-
-				.prose :global(img) {
-  				margin: 2rem 0;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-				}
-			
-				.prose :global(blockquote) {
-				margin: 2rem 0;
-				padding: 1rem 1.25rem;
-				border-left: 4px solid rgb(var(--accent));
-				background: rgba(var(--gray-light), 0.4);
-				}
-			
-			}
-		</style>
-	</head>
-
-	<body>
-		<Header />
-
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Dernière mise à jour le <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-
-						<h1>{title}</h1>
-						<hr />
-					</div>
-
-					<slot />
-				</div>
-			</article>
-		</main>
-
-		<Footer />
-	</body>
+    <!-- Footer commun à toutes les pages -->
+    <Footer />
+  </body>
 </html>
+
+<!--
+  RÈGLE ASTRO IMPORTANTE :
+  Les blocs <style> doivent toujours être placés à la racine du fichier,
+  après </html>, jamais à l'intérieur du <head> ou du <body>.
+  Astro les extrait au moment du build, les scope automatiquement
+  au composant (via un attribut data-astro-cid-*), puis les bundle
+  dans un fichier CSS optimisé. Si le <style> est imbriqué dans le <head>,
+  esbuild ne sait pas le gérer correctement et génère des erreurs
+  silencieuses en production.
+-->
+<style>
+  /*
+    main = conteneur principal de la page article.
+    On garde la même logique de respiration que sur le reste du site.
+  */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /*
+    article = bloc global de l'article.
+  */
+  article {
+    width: 100%;
+  }
+
+  /*
+    hero-image = zone de l'image de couverture.
+    On garde une largeur confortable et un bon espace dessous.
+  */
+  .hero-image {
+    margin-bottom: 2rem;
+  }
+
+  .hero-image img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+  }
+
+  /*
+    prose = zone de lecture.
+    On limite la largeur pour garder un bon confort de lecture.
+  */
+  .prose {
+    max-width: 760px;
+    margin: 0 auto;
+    color: rgb(var(--gray-dark));
+  }
+
+  /*
+    title = bloc d'introduction de l'article :
+    date, titre, ligne de séparation.
+  */
+  .title {
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  /*
+    Titre principal de l'article.
+  */
+  .title h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2.8rem;
+    line-height: 1.1;
+    color: rgb(var(--black));
+  }
+
+  /*
+    Date de publication.
+  */
+  .date {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    color: rgb(var(--gray));
+  }
+
+  /*
+    Date de mise à jour éventuelle.
+  */
+  .last-updated-on {
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+
+  /*
+    Ligne de séparation discrète.
+  */
+  .title hr {
+    margin: 1.5rem 0 0 0;
+    border: none;
+    border-top: 1px solid rgba(var(--gray), 0.25);
+  }
+
+  /*
+    Styles du contenu Markdown injecté dans <slot />.
+    On utilise :global() car le contenu Markdown est généré
+    dynamiquement par Astro — ses balises n'ont pas l'attribut
+    data-astro-cid-* du composant, donc le scope normal ne les atteint pas.
+    :global() force l'application du style sans condition de scope.
+  */
+  .prose :global(p) {
+    margin: 0 0 1.25rem 0;
+    line-height: 1.8;
+  }
+
+  .prose :global(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    color: rgb(var(--black));
+  }
+
+  .prose :global(h3) {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    color: rgb(var(--black));
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 1.5rem 1.25rem;
+    padding: 0;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(a) {
+    color: rgb(var(--accent));
+    text-decoration: none;
+  }
+
+  .prose :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .prose :global(blockquote) {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid rgb(var(--accent));
+    background: rgba(var(--gray-light), 0.5);
+    color: rgb(var(--gray-dark));
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  /*
+    Adaptation mobile.
+    En dessous de 720px, on réduit les marges et la taille du titre
+    pour garder une lecture confortable sur petit écran.
+  */
+  @media (max-width: 720px) {
+    main {
+      padding: 2rem 1rem 3rem;
+    }
+
+    .title h1 {
+      font-size: 2.1rem;
+    }
+
+    .prose {
+      max-width: 100%;
+    }
+
+    .prose :global(p) {
+      margin-bottom: 1.5rem;
+    }
+
+    .prose :global(img) {
+      margin: 2rem 0;
+      border-radius: 12px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .prose :global(blockquote) {
+      margin: 2rem 0;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid rgb(var(--accent));
+      background: rgba(var(--gray-light), 0.4);
+    }
+  }
+</style>
