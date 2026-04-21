@@ -145,14 +145,15 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin-bottom: 2rem;
   }
 
-  .hero-image img {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: var(--box-shadow);
-  }
+.hero-image img {
+  display: block;
+  width: 100%;
+  max-width: 750px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: var(--box-shadow);
+}
 
   /*
     prose = zone de lecture.
@@ -275,7 +276,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     En dessous de 720px, on réduit les marges et la taille du titre
     pour garder une lecture confortable sur petit écran.
   */
-  @media (max-width: 720px) {
+  @media (max-width: 520px) {
     main {
       padding: 2rem 1rem 3rem;
     }
