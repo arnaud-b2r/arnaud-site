@@ -7,6 +7,21 @@
  * Props :
  * - title       : titre de la page (balise <title> + og:title)
  * - description : description meta (og:description)
+ *
+ * IMPORTANT — pourquoi pas de .container autour du <slot /> ?
+ *
+ * Avant, le slot était enveloppé dans <div class="container">, ce qui
+ * limitait le contenu à --content-width et ajoutait du padding latéral
+ * sur toutes les pages.
+ *
+ * Avec le nouveau design dark mode, la homepage a besoin d'occuper
+ * toute la largeur de la fenêtre (hero pleine largeur, grille de cards
+ * jointives bord à bord). Enfermer le slot dans .container empêchait cela.
+ *
+ * Chaque page gère maintenant sa propre largeur interne :
+ * - index.astro   : pleine largeur, via .home-inner pour les sections centrées
+ * - blog/index.astro : utilise sa propre class .blog-page + .container
+ * - articles      : BlogPost.astro gère la largeur via .prose
  */
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
@@ -14,20 +29,15 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 /*
-  IMPORTANT — pourquoi on importe global.css ici plutôt qu'avec une balise <link> ?
+  Pourquoi importer global.css ici plutôt qu'avec une balise <link> ?
 
   Quand on écrit <link rel="stylesheet" href="/styles/global.css" />, le navigateur
   cherche ce fichier à l'URL /styles/global.css. Cela ne fonctionne que si le fichier
-  est physiquement dans le dossier public/. Astro ne le touche pas, ne le bundle pas,
-  ne le hashe pas.
+  est physiquement dans public/. Astro ne le bundle pas, ne lui ajoute pas de hash.
 
-  Quand on importe le CSS ici dans le frontmatter, Astro l'intègre dans son pipeline
-  de build : il le bundle avec les autres styles, lui ajoute un hash pour le cache,
-  et injecte automatiquement la bonne balise <link> dans le HTML final.
-  C'est la méthode fiable qui fonctionne identiquement en local et en production.
-
-  Prérequis : global.css doit être dans src/styles/global.css (et non dans public/).
-  Pour le déplacer depuis public/ : mv public/styles/global.css src/styles/global.css
+  En important ici dans le frontmatter, Astro intègre le CSS dans son pipeline
+  de build : il le bundle, lui ajoute un hash pour le cache, et injecte la bonne
+  balise <link> dans le HTML final. Fiable en local et en production.
 */
 import '../styles/global.css';
 
@@ -48,11 +58,6 @@ const {
     <!--
       BaseHead gère tout le contenu du <head> :
       balises meta, og:, favicon, canonical URL, polices.
-      On lui passe le titre et la description de la page courante.
-
-      Le global.css est importé dans le frontmatter ci-dessus —
-      Astro l'injecte automatiquement ici sous forme de <link> bundlé.
-      Il ne faut donc plus de <link rel="stylesheet" href="/styles/global.css" /> ici.
     -->
     <BaseHead title={title} description={description} />
   </head>
@@ -61,16 +66,13 @@ const {
     <!-- Header commun à toutes les pages -->
     <Header />
 
+    <!--
+      <main> sans .container autour du slot.
+      Chaque page est responsable de centrer et contraindre
+      son propre contenu selon ses besoins.
+    -->
     <main>
-      <!--
-        .container est défini dans global.css.
-        Il centre le contenu et limite sa largeur à --content-width (860px).
-        <slot /> est l'endroit où Astro injecte le contenu
-        de chaque page qui utilise ce layout.
-      -->
-      <div class="container">
-        <slot />
-      </div>
+      <slot />
     </main>
 
     <!-- Footer commun à toutes les pages -->

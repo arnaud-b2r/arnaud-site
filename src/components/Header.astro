@@ -1,57 +1,82 @@
 ---
+/**
+ * Header.astro
+ * Navigation principale — dark mode cohérent avec la homepage.
+ * Fond quasi-noir, logo-circle sur surface subtile, nav discrète.
+ * La page active est signalée par la couleur accent (terre cuite)
+ * sans fond coloré — plus élégant en dark mode.
+ */
 const currentPath = Astro.url.pathname;
 ---
 
 <header>
   <div class="header-inner">
+
+    <!-- Marque : logo + nom du site -->
     <a href="/" class="brand">
       <div class="logo-circle">
-        <img src="/images/carnet-bord_logo_blanc.png" alt="Logo" />
+        <img src="/images/carnet-bord_logo_blanc.png" alt="Logo Carnet de bord" />
       </div>
-      <div>
+      <div class="brand-text">
         <span class="site-name">CARNET DE BORD</span>
         <span class="site-sub">par Arnaud Borderiou</span>
       </div>
     </a>
-    <nav>
+
+    <!-- Navigation principale -->
+    <nav aria-label="Navigation principale">
       <a href="/" aria-current={currentPath === "/" ? "page" : undefined}>Accueil</a>
-      <a href="/blog" aria-current={currentPath.startsWith("/articles") ? "page" : undefined}>Articles</a>
+      <a href="/blog" aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Articles</a>
       <a href="/about" aria-current={currentPath === "/about" ? "page" : undefined}>À propos</a>
     </nav>
+
   </div>
 </header>
 
 <style>
   header {
-    background: #1a3a4a;
+    background: #0D0D0B;
+    border-bottom: 0.5px solid rgba(250,250,247,0.07);
     position: sticky;
     top: 0;
     z-index: 100;
+    /* Légère transparence pour l'effet "verre" quand on scrolle */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .header-inner {
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 2rem;
-    height: 80px;
+    padding: 0 40px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
+  /* --- Marque --- */
   .brand {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     text-decoration: none;
   }
 
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  /*
+    Le cercle du logo reprend --color-bg-subtle (même teinte que
+    le panneau droit du hero) pour une cohérence visuelle immédiate.
+  */
   .logo-circle {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #f5f0e8;
-    border: 2px solid #4a7a8a;
+    background: #1A3A4A;
+    border: 0.5px solid rgba(250,250,247,0.12);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -65,43 +90,78 @@ const currentPath = Astro.url.pathname;
     object-fit: cover;
   }
 
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
   .site-name {
     display: block;
-    font-size: 26px;
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 13px;
     font-weight: 500;
-    color: #f0f0f0;
-    line-height: 1.1;
+    letter-spacing: 0.1em;
+    color: #FAFAF7;
+    line-height: 1;
   }
 
   .site-sub {
     display: block;
-    font-size: 12px;
-    color: #7aaabb;
-    margin-top: 2px;
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: rgba(250,250,247,0.35);
   }
 
+  /* --- Navigation --- */
   nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
 
   nav a {
-    color: #a8c8d4;
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: rgba(250,250,247,0.45);
     text-decoration: none;
-    font-size: 14px;
-    padding: 7px 16px;
-    border-radius: 6px;
-    transition: background 0.15s;
+    padding: 6px 14px;
+    border-radius: 2px;
+    transition: color 0.15s ease;
   }
 
   nav a:hover {
-    background: rgba(255, 255, 255, 0.08);
+    color: rgba(250,250,247,0.85);
+    text-decoration: none;
   }
 
+  /*
+    Page active : couleur accent sans fond.
+    En dark mode, un fond coloré sur un lien actif crée trop de bruit visuel.
+    La couleur seule suffit à signaler la position.
+  */
   nav a[aria-current="page"] {
-    background: #e8572a;
-    color: #ffffff;
+    color: #E8714A;
     font-weight: 500;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 640px) {
+    .header-inner {
+      padding: 0 20px;
+    }
+
+    .site-sub {
+      display: none;
+    }
+
+    nav a {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
   }
 </style>
