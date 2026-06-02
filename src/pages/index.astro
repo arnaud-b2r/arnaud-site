@@ -58,7 +58,8 @@ function getSection(category?: string): string {
        La photo portrait occupe toute la colonne gauche — pas de cercle,
        pas de cadre, l'image est le fond de la colonne.
        ============================================================ -->
-  <section class="hero">
+  <section class="hero-wrapper">
+  <div class="hero">
 
     <!-- Colonne gauche : photo portrait -->
     <div class="hero-img">
@@ -98,6 +99,7 @@ function getSection(category?: string): string {
       </div>
 
     </div>
+  </div>
   </section>
 
   <!-- ============================================================
@@ -179,19 +181,22 @@ function getSection(category?: string): string {
    HERO
    ============================================================ */
 
-.hero {
-  display: grid;
-  /*
-    Deux colonnes égales.
-    La colonne gauche (photo) et droite (texte) font la même largeur.
-    Ajuste à 1.1fr 1fr ou 0.9fr 1fr si tu veux déséquilibrer.
-  */
-  grid-template-columns: 1fr 1fr;
-  min-height: 250px;
+.hero-wrapper {
   border-bottom: 0.5px solid var(--color-border);
 }
 
-/* Colonne gauche : photo pleine hauteur */
+.hero {
+  display: grid;
+  /*
+    Deux colonnes égales dans un conteneur centré.
+    Même max-width que les Highlights pour aligner les sections.
+  */
+  grid-template-columns: 1fr 1fr;
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+/* Colonne gauche : photo — suit la hauteur naturelle de la colonne droite */
 .hero-img {
   overflow: hidden;
   background: var(--color-bg-subtle);
@@ -212,7 +217,7 @@ function getSection(category?: string): string {
 
 /* Colonne droite : texte */
 .hero-text {
-  padding: 64px 56px;
+  padding: 40px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
