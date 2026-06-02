@@ -1,33 +1,44 @@
 ---
 /**
- * Header.astro
- * Navigation principale — dark mode cohérent avec la homepage.
- * Fond quasi-noir, logo-circle sur surface subtile, nav discrète.
- * La page active est signalée par la couleur accent (terre cuite)
- * sans fond coloré — plus élégant en dark mode.
+ * Header.astro — Carnet de bord
+ * Light mode — juin 2026
+ *
+ * Structure : nom du site en serif à gauche, nav à droite avec 5 items.
+ * Les catégories Terrain / Curiosité / Échappées pointent vers /blog?categorie=xxx
+ * La page active est signalée par la couleur accent (terracotta).
  */
 const currentPath = Astro.url.pathname;
+
+const isHome      = currentPath === '/';
+const isTerrain   = currentPath.startsWith('/blog') && Astro.url.search.includes('terrain');
+const isCuriosite = currentPath.startsWith('/blog') && Astro.url.search.includes('curiosite');
+const isEchappees = currentPath.startsWith('/blog') && Astro.url.search.includes('echappees');
+const isAbout     = currentPath === '/about';
 ---
 
 <header>
   <div class="header-inner">
 
-    <!-- Marque : logo + nom du site -->
-    <a href="/" class="brand">
-      <div class="logo-circle">
-        <img src="/images/carnet-bord_logo_blanc.png" alt="Logo Carnet de bord" />
-      </div>
-      <div class="brand-text">
-        <span class="site-name">CARNET DE BORD</span>
-        <span class="site-sub">par Arnaud Borderiou</span>
-      </div>
-    </a>
+    <!-- Nom du site en serif à gauche -->
+    <a href="/" class="brand">Carnet de bord</a>
 
-    <!-- Navigation principale -->
+    <!-- Navigation 5 items -->
     <nav aria-label="Navigation principale">
-      <a href="/" aria-current={currentPath === "/" ? "page" : undefined}>Accueil</a>
-      <a href="/blog" aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Articles</a>
-      <a href="/about" aria-current={currentPath === "/about" ? "page" : undefined}>À propos</a>
+      <a href="/" class={isHome ? 'active' : ''} aria-current={isHome ? 'page' : undefined}>
+        Accueil
+      </a>
+      <a href="/blog?categorie=terrain" class={isTerrain ? 'active' : ''}>
+        Terrain
+      </a>
+      <a href="/blog?categorie=curiosite" class={isCuriosite ? 'active' : ''}>
+        Curiosité
+      </a>
+      <a href="/blog?categorie=echappees" class={isEchappees ? 'active' : ''}>
+        Échappées
+      </a>
+      <a href="/about" class={isAbout ? 'active' : ''} aria-current={isAbout ? 'page' : undefined}>
+        À propos
+      </a>
     </nav>
 
   </div>
@@ -35,87 +46,41 @@ const currentPath = Astro.url.pathname;
 
 <style>
   header {
-    background: #0D0D0B;
-    border-bottom: 0.5px solid rgba(250,250,247,0.07);
+    background: var(--color-bg);
+    border-bottom: 0.5px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 100;
-    /* Légère transparence pour l'effet "verre" quand on scrolle */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
 
   .header-inner {
-    max-width: 1280px;
+    max-width: var(--content-width);
     margin: 0 auto;
-    padding: 0 40px;
-    height: 60px;
+    padding: 0 var(--content-padding);
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  /* --- Marque --- */
+  /* Nom du site : serif, sobre, pas de majuscules */
   .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text);
     text-decoration: none;
-  }
-
-  .brand:hover {
-    text-decoration: none;
-  }
-
-  /*
-    Le cercle du logo reprend --color-bg-subtle (même teinte que
-    le panneau droit du hero) pour une cohérence visuelle immédiate.
-  */
-  .logo-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #1A3A4A;
-    border: 0.5px solid rgba(250,250,247,0.12);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    letter-spacing: -0.01em;
     flex-shrink: 0;
   }
 
-  .logo-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .brand:hover {
+    color: var(--color-text);
+    text-decoration: none;
   }
 
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .site-name {
-    display: block;
-    font-family: 'Roboto', system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: #FAFAF7;
-    line-height: 1;
-  }
-
-  .site-sub {
-    display: block;
-    font-family: 'Roboto', system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 300;
-    letter-spacing: 0.04em;
-    color: rgba(250,250,247,0.35);
-  }
-
-  /* --- Navigation --- */
   nav {
     display: flex;
     align-items: center;
@@ -123,45 +88,41 @@ const currentPath = Astro.url.pathname;
   }
 
   nav a {
-    font-family: 'Roboto', system-ui, sans-serif;
-    font-size: 12px;
+    font-family: var(--font-sans);
+    font-size: 13px;
     font-weight: 400;
-    letter-spacing: 0.06em;
-    color: rgba(250,250,247,0.45);
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
     text-decoration: none;
     padding: 6px 14px;
-    border-radius: 2px;
+    border-radius: var(--radius-pill);
     transition: color 0.15s ease;
   }
 
   nav a:hover {
-    color: rgba(250,250,247,0.85);
+    color: var(--color-text);
     text-decoration: none;
   }
 
-  /*
-    Page active : couleur accent sans fond.
-    En dark mode, un fond coloré sur un lien actif crée trop de bruit visuel.
-    La couleur seule suffit à signaler la position.
-  */
+  nav a.active,
   nav a[aria-current="page"] {
-    color: #E8714A;
+    color: var(--color-accent);
     font-weight: 500;
   }
 
-  /* --- Responsive --- */
-  @media (max-width: 640px) {
-    .header-inner {
-      padding: 0 20px;
-    }
+  /* Tablette : masquer les catégories, garder Accueil + À propos */
+  @media (max-width: 768px) {
+    .header-inner { height: 56px; }
 
-    .site-sub {
+    nav a:nth-child(2),
+    nav a:nth-child(3),
+    nav a:nth-child(4) {
       display: none;
     }
+  }
 
-    nav a {
-      padding: 6px 10px;
-      font-size: 11px;
-    }
+  @media (max-width: 480px) {
+    .brand { font-size: 14px; }
+    nav a { padding: 6px 10px; font-size: 12px; }
   }
 </style>

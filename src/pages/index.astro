@@ -1,8 +1,16 @@
 ---
 /**
  * index.astro — Homepage "Carnet de bord"
- * Design dark mode : hero asymétrique, ticker thématique, grille de cards.
- * Refonte mai 2025.
+ * Light mode — juin 2026
+ *
+ * Structure :
+ * 1. Hero : photo à gauche (pleine hauteur), texte à droite
+ * 2. Section "Highlights" : 2 derniers articles côte à côte
+ * 3. Lien "Découvrir tous les articles"
+ *
+ * Le mapping des catégories vers les sections Terrain/Curiosité/Échappées
+ * est défini ici — les articles gardent leurs catégories granulaires
+ * dans le frontmatter (.md), la homepage fait la correspondance.
  */
 import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
@@ -10,166 +18,151 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 /*
   On récupère tous les articles, triés du plus récent au plus ancien.
-  On affiche les 3 premiers sur la homepage — modifiable en changeant
-  le chiffre dans .slice(0, 3).
-  On utilise pubDate (et non date) — vérifier que ton schéma content.config.ts
-  utilise bien le même nom de champ.
+  On n'affiche que les 2 plus récents sur la homepage — modifiable en
+  changeant le chiffre dans .slice(0, 2).
 */
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const recentPosts = posts.slice(0, 3);
+const recentPosts = posts.slice(0, 2);
+
+/*
+  Mapping catégories → sections.
+  Les clés correspondent aux valeurs du champ `category` dans le frontmatter.
+  Les valeurs correspondent aux noms de sections affichés sur le site.
+  Ajouter une catégorie ici si besoin.
+*/
+const categoryToSection: Record<string, string> = {
+  marketing:       'Terrain',
+  cybersécurité:   'Terrain',
+  dématérialisation: 'Terrain',
+  it:              'Terrain',
+  ia:              'Curiosité',
+  tech:            'Curiosité',
+  voyage:          'Échappées',
+  lecture:         'Échappées',
+  culture:         'Échappées',
+};
+
+function getSection(category?: string): string {
+  if (!category) return '';
+  return categoryToSection[category.toLowerCase()] ?? category;
+}
 ---
 
 <MainLayout>
 
   <!-- ============================================================
-       HERO — section pleine largeur
-       Grille en deux colonnes asymétriques :
-       - gauche : titre, accroche, CTA
-       - droite : logo + stats chiffrées
+       HERO
+       Deux colonnes : photo pleine hauteur à gauche, texte à droite.
+       La photo portrait occupe toute la colonne gauche — pas de cercle,
+       pas de cadre, l'image est le fond de la colonne.
        ============================================================ -->
   <section class="hero">
-    <div class="hero-inner">
 
-      <!-- Colonne gauche -->
-      <div class="hero-left">
-        <p class="kicker">
-          <span class="kicker-dot"></span>
-          B2B Marketing · Angers
-        </p>
+    <!-- Colonne gauche : photo portrait -->
+    <div class="hero-img">
+      <img
+        src="/images/portrait-arnaud.png"
+        alt="Portrait d'Arnaud Borderiou"
+        class="hero-photo"
+      />
+    </div>
 
-        <h1 class="hero-title">
-          Marketing<br>
-          à l'ère <em>de l'IA</em><br>
-          <span class="title-dim">et après.</span>
-        </h1>
+    <!-- Colonne droite : texte -->
+    <div class="hero-text">
 
-        <p class="hero-sub">
-          Professionnel B2B spécialisé en dématérialisation, IT et cybersécurité.
-          Ce carnet documente une trajectoire, des idées et une vision du métier en mutation.
-        </p>
+      <p class="kicker">
+        <span class="kicker-dot"></span>
+        B2B Marketing · Angers
+      </p>
 
-        <div class="hero-actions">
-          <a href="/blog" class="btn-primary">Lire le journal</a>
-          <a href="/about" class="btn-ghost">
-            <!-- Icône flèche discrète -->
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="0.8"/>
-              <path d="M5.5 4.5L9 7L5.5 9.5" stroke="currentColor" stroke-width="0.8"/>
-            </svg>
-            À propos
-          </a>
-        </div>
-      </div>
+      <h1 class="hero-title">
+        Carnet<br>
+        <em>de Bord</em><br>
+        <span class="title-dim">et après.</span>
+      </h1>
 
-      <!-- Colonne droite — logo + statistiques -->
-      <div class="hero-right">
-        <!-- Logo centré en fond -->
-        <div class="hero-logo-wrap">
-          <img
-            src="/images/carnet-bord_logo.png"
-            alt="Carnet de bord — Arnaud Borderiou"
-            class="hero-logo"
-          />
-        </div>
+      <!--
+        Bloc narratif avec filet terracotta à gauche.
+        Ajuste ce texte selon ce que tu veux mettre en avant.
+        C'est ta voix, pas un slogan — parle directement au lecteur.
+      -->
+      <p class="hero-narrative">
+        Je m'appelle <strong>Arnaud Borderiou</strong>. Depuis 6 ans, je travaille le marketing en B2B — dématérialisation, IT, cybersécurité. Ce carnet, c'est ce qui déborde de LinkedIn : les lectures, les doutes, les virages que l'IA impose, et quelques détours par les chemins de randonnée.
+      </p>
 
-        <!-- Bande de stats en bas du panneau droit -->
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-num">48<sup>+</sup></span>
-            <span class="stat-label">Articles publiés</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">6<sup>ans</sup></span>
-            <span class="stat-label">En B2B tech</span>
-          </div>
-          <div class="stat stat--jade">
-            <span class="stat-num">∞</span>
-            <span class="stat-label">En apprentissage</span>
-          </div>
-        </div>
+      <div class="hero-actions">
+        <a href="/blog" class="btn-primary">Lire le journal</a>
+        <a href="/about" class="btn-ghost">À propos →</a>
       </div>
 
     </div>
   </section>
 
   <!-- ============================================================
-       TICKER — bande thématique horizontale
-       Signale les univers couverts par le site sans verbe ni explication.
+       HIGHLIGHTS — 2 derniers articles
        ============================================================ -->
-  <div class="ticker" aria-label="Thèmes abordés sur le site">
-    <span class="ticker-item ticker-item--active">Marketing B2B</span>
-    <span class="ticker-sep" aria-hidden="true">·</span>
-    <span class="ticker-item">Dématérialisation</span>
-    <span class="ticker-sep" aria-hidden="true">·</span>
-    <span class="ticker-item">Intelligence Artificielle</span>
-    <span class="ticker-sep" aria-hidden="true">·</span>
-    <span class="ticker-item">Cybersécurité</span>
-    <span class="ticker-sep" aria-hidden="true">·</span>
-    <span class="ticker-item">Voyages & Terrain</span>
-    <span class="ticker-sep" aria-hidden="true">·</span>
-    <span class="ticker-item">Lecture</span>
-  </div>
+  <section class="highlights">
 
-  <!-- ============================================================
-       SECTION ARTICLES — dernières publications
-       ============================================================ -->
-  <section class="articles-section">
-
-    <!-- En-tête de section -->
-    <div class="section-header">
-      <div>
-        <p class="section-label">Dernières publications</p>
-        <h2 class="section-title">
-          Journal de bord <span class="title-dim">/ récents</span>
-        </h2>
-      </div>
-      <a href="/blog" class="see-all">Tout voir →</a>
+    <div class="highlights-header">
+      <h2 class="highlights-title">Highlights</h2>
+      <a href="/blog" class="browse-btn">Tous les articles →</a>
     </div>
 
-    <!-- Grille de cards
-         Les cards sont séparées par une gouttière d'1px (background sur le parent).
-         Chaque card a un fond identique au fond principal — ce qui fait apparaître
-         la gouttière comme un séparateur fin, technique d'éditorial magazine. -->
+    <!--
+      Grille de 2 cards côte à côte.
+      Chaque card : image pleine largeur, puis titre + flèche,
+      date, excerpt, badge section.
+    -->
     <div class="cards-grid">
       {recentPosts.map((post) => (
-        <article class="post-card">
+        <article class="card">
           <a href={`/blog/${post.id}/`} class="card-link" aria-label={`Lire : ${post.data.title}`}>
 
-            <!-- Visuel / image de couverture -->
+            <!-- Image de couverture -->
             <div class="card-img">
               {post.data.heroImage
-                ? <img src={post.data.heroImage} alt={post.data.title} class="card-illustration" />
+                ? <img src={post.data.heroImage} alt={post.data.title} class="card-photo" />
                 : <div class="card-placeholder" aria-hidden="true"></div>
               }
-              <!-- Badge de catégorie positionné sur l'image -->
-              {post.data.category && (
-                <span class={`card-badge badge-${post.data.category.toLowerCase()}`}>
-                  {post.data.category}
-                </span>
-              )}
             </div>
 
             <!-- Corps de la card -->
             <div class="card-body">
-              <p class="card-date">
-                <FormattedDate date={post.data.pubDate} />
+
+              <!-- Titre + flèche diagonale -->
+              <div class="card-title-row">
+                <h3 class="card-title">{post.data.title}</h3>
+                <span class="card-arrow" aria-hidden="true">↗</span>
+              </div>
+
+              <!-- Auteur · Date -->
+              <p class="card-meta">
+                Arnaud Borderiou · <FormattedDate date={post.data.pubDate} />
               </p>
-              <h3 class="card-title">{post.data.title}</h3>
+
+              <!-- Excerpt -->
               {post.data.description && (
                 <p class="card-excerpt">{post.data.description}</p>
               )}
-            </div>
 
-            <!-- Pied de card -->
-            <div class="card-footer">
-              <span class="card-read">Lire</span>
-            </div>
+              <!-- Badge section (Terrain / Curiosité / Échappées) -->
+              {post.data.category && (
+                <span class="card-badge">
+                  {getSection(post.data.category)}
+                </span>
+              )}
 
+            </div>
           </a>
         </article>
       ))}
+    </div>
+
+    <!-- Lien discret pour voir tous les articles -->
+    <div class="discover">
+      <a href="/blog" class="discover-link">Découvrir tous les articles →</a>
     </div>
 
   </section>
@@ -178,86 +171,83 @@ const recentPosts = posts.slice(0, 3);
 
 <style>
 /*
-  Toutes les règles ici sont scopées à index.astro par Astro.
-  Elles ne peuvent pas entrer en conflit avec global.css ou d'autres pages.
-  On utilise les variables définies dans global.css (--color-*, --font-*, etc.)
+  Styles scopés à index.astro.
+  Utilisent les variables de global.css.
 */
 
 /* ============================================================
    HERO
    ============================================================ */
 
-/*
-  .hero est pleine largeur (pas de max-width).
-  .hero-inner est le conteneur centré à l'intérieur.
-  Cette séparation permet au fond de s'étendre bord à bord
-  tout en gardant le contenu aligné avec le reste du site.
-*/
 .hero {
-  width: 100%;
+  display: grid;
+  /*
+    Deux colonnes égales.
+    La colonne gauche (photo) et droite (texte) font la même largeur.
+    Ajuste à 1.1fr 1fr ou 0.9fr 1fr si tu veux déséquilibrer.
+  */
+  grid-template-columns: 1fr 1fr;
+  min-height: 250px;
   border-bottom: 0.5px solid var(--color-border);
 }
 
-.hero-inner {
-  max-width: var(--content-width);
-  margin: 0 auto;
-  display: grid;
-  /* 1.3fr pour la colonne gauche (texte), 1fr pour la droite (visuel) */
-  grid-template-columns: 1.3fr 1fr;
-  min-height: 460px;
+/* Colonne gauche : photo pleine hauteur */
+.hero-img {
+  overflow: hidden;
+  background: var(--color-bg-subtle);
+  position: relative;
 }
 
-/* --- Colonne gauche --- */
-.hero-left {
-  padding: 56px 48px 56px 40px;
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*
+    object-position : centre haut pour que le visage soit toujours visible.
+    Ajuste si la composition de ta photo le nécessite.
+  */
+  object-position: center top;
+  display: block;
+}
+
+/* Colonne droite : texte */
+.hero-text {
+  padding: 64px 56px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-right: 0.5px solid var(--color-border);
+  justify-content: center;
+  border-left: 0.5px solid var(--color-border);
 }
 
-/*
-  .kicker : ligne d'introduction au-dessus du titre.
-  Le point coloré est un pseudo-élément, pas une icône —
-  plus léger et cohérent avec la charte.
-*/
 .kicker {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-faint);
-  margin: 0 0 28px;
+  margin-bottom: 20px;
 }
 
 .kicker-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--color-accent);
   flex-shrink: 0;
 }
 
-/*
-  .hero-title : titre principal en très grande taille.
-  font-size en clamp() pour s'adapter aux écrans intermédiaires
-  sans cassure brutale entre les breakpoints.
-  L'italic sur <em> + la couleur sur .title-dim créent une
-  hiérarchie à 3 niveaux sans changer de famille de police.
-*/
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 5.5vw, 4.5rem);
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
   font-weight: 900;
   line-height: 1.0;
   letter-spacing: -0.02em;
   color: var(--color-text);
-  margin: 0 0 24px;
+  margin-bottom: 24px;
 }
 
 .hero-title em {
@@ -269,51 +259,64 @@ const recentPosts = posts.slice(0, 3);
   color: var(--color-text-faint);
 }
 
-.hero-sub {
+/*
+  Bloc narratif : filet terracotta à gauche.
+  Crée un signal visuel "prise de parole directe".
+  strong : passe de muted à text pour les mots importants.
+*/
+.hero-narrative {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 300;
   line-height: var(--leading-normal);
   color: var(--color-text-muted);
-  max-width: 42ch;
-  margin: 0 0 40px;
+  max-width: 58ch;
+  margin-bottom: 36px;
+  border-left: 1.5px solid rgba(232, 113, 74, 0.35);
+  padding-left: 14px;
 }
 
-/* --- Boutons du hero --- */
+.hero-narrative strong {
+  color: var(--color-text);
+  font-weight: 400;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
+/*
+  btn-primary : fond sombre, texte clair, coins arrondis pill.
+  Inspiré du style Krung Thep — plus doux que le carré terracotta précédent.
+*/
 .btn-primary {
   display: inline-block;
-  background: var(--color-accent);
+  background: var(--color-text);
   color: var(--color-bg);
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 13px 28px;
-  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   transition: opacity 0.15s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.88;
+  opacity: 0.8;
   text-decoration: none;
+  color: var(--color-bg);
 }
 
 .btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-faint);
   text-decoration: none;
@@ -325,280 +328,104 @@ const recentPosts = posts.slice(0, 3);
   text-decoration: none;
 }
 
-/* --- Colonne droite --- */
-.hero-right {
-  background: var(--color-bg-subtle);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  overflow: hidden;
-}
-
-/*
-  Le logo est centré dans la zone haute du panneau droit.
-  Il sert d'élément graphique plutôt que de logotype fonctionnel ici,
-  d'où l'opacité réduite — présence sans domination.
-*/
-.hero-logo-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  /* On laisse de l'espace pour les stats en bas */
-  bottom: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-}
-
-.hero-logo {
-  width: min(160px, 55%);
-  height: auto;
-  object-fit: contain;
-  /* Légère opacité pour que le logo devienne un fond graphique */
-  opacity: 0.35;
-  filter: brightness(2);
-}
-
-/*
-  .hero-stats : bande de métriques en bas du panneau droit.
-  Trois stats côte à côte dans des cases séparées par des bordures.
-  C'est ce qui transforme le site d'un blog en personal brand :
-  afficher des métriques concrètes crée de la crédibilité immédiate.
-*/
-.hero-stats {
-  display: flex;
-  border-top: 0.5px solid var(--color-border);
-  position: relative;
-  z-index: 2;
-}
-
-.stat {
-  flex: 1;
-  padding: 20px 22px;
-  border-right: 0.5px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.stat:last-child {
-  border-right: none;
-}
-
-.stat-num {
-  font-family: var(--font-serif);
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
-  line-height: 1;
-}
-
-.stat-num sup {
-  font-size: 0.75em;
-  color: var(--color-accent);
-  vertical-align: super;
-}
-
-.stat--jade .stat-num {
-  color: var(--color-jade);
-}
-
-.stat-label {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-}
-
 /* ============================================================
-   TICKER
+   HIGHLIGHTS
    ============================================================ */
 
-/*
-  Bande horizontale entre le hero et les articles.
-  Rôle : respirateur visuel + carte d'identité thématique du site.
-  Overflow: hidden coupe les items qui dépassent sur petits écrans.
-*/
-.ticker {
-  border-top: 0.5px solid var(--color-border);
-  border-bottom: 0.5px solid var(--color-border);
-  background: var(--color-bg-raised);
-  padding: 12px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  overflow-x: auto;
-  /* Cacher la scrollbar sur les navigateurs qui l'affichent */
-  scrollbar-width: none;
-}
-
-.ticker::-webkit-scrollbar {
-  display: none;
-}
-
-.ticker-item {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-  white-space: nowrap;
-}
-
-/* Le premier item est mis en valeur — c'est le thème principal */
-.ticker-item--active {
-  color: rgba(250,250,247,0.75);
-}
-
-.ticker-sep {
-  color: var(--color-accent);
-  opacity: 0.45;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   SECTION ARTICLES
-   ============================================================ */
-
-.articles-section {
+.highlights {
   max-width: var(--content-width);
   margin: 0 auto;
+  padding-bottom: 64px;
 }
 
-/* En-tête de section : titre à gauche, lien "tout voir" à droite */
-.section-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 48px 40px 0;
-}
-
-.section-label {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-  margin: 0 0 10px;
-  /* Tiret accent avant le label */
+.highlights-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 48px var(--content-padding) 28px;
 }
 
-.section-label::before {
-  content: '';
-  display: inline-block;
-  width: 20px;
-  height: 0.5px;
-  background: var(--color-accent);
-}
-
-.section-title {
+.highlights-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
   font-weight: 700;
   color: var(--color-text);
-  margin: 0;
-  line-height: var(--leading-tight);
-}
-
-.see-all {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  text-decoration: none;
-  margin-bottom: 6px;
-}
-
-.see-all:hover {
-  text-decoration: none;
-  opacity: 0.8;
-}
-
-/* ============================================================
-   GRILLE DE CARDS
-   Technique "gouttière 1px" :
-   - fond du parent : var(--color-border) (très légèrement visible)
-   - gap de 1px entre les cards
-   - chaque card a le fond de la page (--color-bg)
-   → la gouttière apparaît comme un séparateur fin, effet magazine
-   ============================================================ */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--color-border);
-  border-top: 0.5px solid var(--color-border);
-  margin-top: 32px;
-}
-
-/* Fallback 2 colonnes sur tablette */
-@media (min-width: 700px) and (max-width: 900px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.post-card {
-  background: var(--color-bg);
-  transition: background 0.15s ease;
-}
-
-.post-card:hover {
-  background: var(--color-bg-raised);
 }
 
 /*
-  .card-link prend toute la hauteur de la card via flex.
-  Cela permet au .card-footer de se positionner en bas
-  même si le contenu textuel est court.
+  browse-btn : bouton pill avec bordure fine.
+  Même style que dans le template Krung Thep.
 */
+.browse-btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 9px 20px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.browse-btn:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* Grille 2 colonnes */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 0 var(--content-padding);
+}
+
+/* Card */
+.card {
+  background: var(--color-bg-raised);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 0.5px solid var(--color-border);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 24px rgba(26, 26, 24, 0.07);
+}
+
 .card-link {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: block;
   text-decoration: none;
   color: inherit;
+  height: 100%;
 }
 
 .card-link:hover {
   text-decoration: none;
 }
 
-/* Image / placeholder */
+/* Image de la card */
 .card-img {
-  position: relative;
-  height: 180px;
+  width: 100%;
+  height: 220px;
   overflow: hidden;
   background: var(--color-bg-subtle);
-  flex-shrink: 0;
 }
 
-.card-illustration {
+.card-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Légère assombrissement pour que les images claires restent lisibles sur fond sombre */
-  filter: brightness(0.85);
-  transition: filter 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
-.post-card:hover .card-illustration {
-  filter: brightness(0.95);
+.card:hover .card-photo {
+  transform: scale(1.02);
 }
 
 .card-placeholder {
@@ -607,83 +434,50 @@ const recentPosts = posts.slice(0, 3);
   background: var(--color-bg-subtle);
 }
 
-/*
-  Badge de catégorie : positionné en absolu sur l'image.
-  Chaque catégorie a sa propre couleur, héritée de la charte.
-*/
-.card-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  font-family: var(--font-sans);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-}
-
-/* Catégories — ajuster selon tes catégories réelles */
-.badge-marketing {
-  background: rgba(232,113,74,0.15);
-  color: var(--color-accent);
-  border: 0.5px solid rgba(232,113,74,0.3);
-}
-
-.badge-tech {
-  background: rgba(74,124,111,0.15);
-  color: var(--color-jade);
-  border: 0.5px solid rgba(74,124,111,0.3);
-}
-
-.badge-voyage {
-  background: rgba(74,124,111,0.15);
-  color: var(--color-jade);
-  border: 0.5px solid rgba(74,124,111,0.3);
-}
-
-.badge-lecture {
-  background: rgba(74,124,111,0.15);
-  color: var(--color-jade);
-  border: 0.5px solid rgba(74,124,111,0.3);
-}
-
-.badge-ia {
-  background: rgba(26,58,74,0.4);
-  color: #6AA8C0;
-  border: 0.5px solid rgba(106,168,192,0.25);
-}
-
-.badge-cybersécurité {
-  background: rgba(26,58,74,0.4);
-  color: #6AA8C0;
-  border: 0.5px solid rgba(106,168,192,0.25);
-}
-
 /* Corps de la card */
 .card-body {
-  padding: 20px 22px 16px;
-  flex: 1;
+  padding: 20px 22px 22px;
 }
 
-.card-date {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-  margin: 0 0 10px;
+/*
+  Titre + flèche ↗ sur la même ligne.
+  La flèche signale le lien externe / la navigation — inspiré de Krung Thep.
+*/
+.card-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .card-title {
   font-family: var(--font-serif);
   font-size: var(--text-base);
   font-weight: 700;
-  line-height: var(--leading-snug);
   color: var(--color-text);
-  margin: 0 0 10px;
+  line-height: var(--leading-snug);
+}
+
+.card-arrow {
+  font-size: 16px;
+  color: var(--color-text-faint);
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: color 0.15s ease;
+}
+
+.card:hover .card-arrow {
+  color: var(--color-text);
+}
+
+.card-meta {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--color-text-faint);
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
 }
 
 .card-excerpt {
@@ -692,98 +486,89 @@ const recentPosts = posts.slice(0, 3);
   font-weight: 300;
   line-height: var(--leading-normal);
   color: var(--color-text-muted);
-  margin: 0;
-  /* Limiter à 3 lignes avec ellipsis */
+  margin-bottom: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Pied de card — collé en bas grâce au flex sur .card-link */
-.card-footer {
-  padding: 12px 22px;
-  border-top: 0.5px solid var(--color-border);
-}
-
-.card-read {
+/*
+  Badge section : pill avec bordure fine, texte discret.
+  Affiche Terrain / Curiosité / Échappées selon le mapping défini en haut.
+*/
+.card-badge {
+  display: inline-block;
   font-family: var(--font-sans);
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
 }
 
-.card-read::after {
-  content: '→';
+/* Lien "Découvrir tous les articles" */
+.discover {
+  text-align: center;
+  padding: 36px var(--content-padding) 0;
+}
+
+.discover-link {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.discover-link:hover {
+  color: var(--color-text);
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 
-/* Tablette large : 2 colonnes d'articles */
-@media (max-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .hero-inner {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Tablette portrait : hero colonne unique, 2 articles */
-@media (max-width: 768px) {
-  .hero-inner {
+/* Tablette */
+@media (max-width: 900px) {
+  .hero {
     grid-template-columns: 1fr;
     min-height: auto;
   }
 
-  .hero-left {
-    padding: 40px 24px;
-    border-right: none;
-    border-bottom: 0.5px solid var(--color-border);
+  .hero-img {
+    height: 300px;
   }
 
-  /*
-    Sur mobile, on masque le panneau droit du hero.
-    Le logo et les stats seraient trop compressés et peu lisibles.
-    On les réintroduira dans une version mobile dédiée si besoin.
-  */
-  .hero-right {
-    display: none;
-  }
-
-  .ticker {
-    padding: 12px 24px;
-    gap: 20px;
-  }
-
-  .section-header {
-    padding: 40px 24px 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
+  .hero-text {
+    padding: 40px var(--content-padding);
+    border-left: none;
+    border-top: 0.5px solid var(--color-border);
   }
 }
 
-/* Mobile : colonne unique partout */
-@media (max-width: 480px) {
-  .hero-title {
-    font-size: 2.5rem;
+/* Mobile */
+@media (max-width: 640px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
   }
 
-  .hero-left {
-    padding: 32px 20px;
+  .highlights-header {
+    padding-top: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-text {
+    padding: 32px var(--content-padding);
   }
 }
 </style>
