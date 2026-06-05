@@ -10,7 +10,18 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
-		category: z.string().optional(),
+		/*
+		  category : la section principale de navigation.
+		  Valeurs acceptées : 'terrain' | 'curiosite' | 'echappees'
+		  C'est ce qui alimente les pages /blog/terrain, /blog/curiosite, /blog/echappees
+		*/
+		category: z.enum(['terrain', 'curiosite', 'echappees']).optional(),
+		/*
+		  subcategory : l'étiquette fine affichée sur les cards et dans les articles.
+		  Exemples : 'marketing', 'ia', 'tech', 'voyage', 'lecture', 'culture'...
+		  Pas de liste fixe — tu peux en ajouter librement.
+		*/
+		subcategory: z.string().optional(),
 	}),
 });
 

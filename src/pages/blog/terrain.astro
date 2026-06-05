@@ -1,75 +1,25 @@
 ---
 /**
- * blog/index.astro — Page principale des articles
- * Light mode — juin 2026
- *
- * Structure :
- * - Article featured : photo gauche + titre/extrait droite
- * - Grille 2 colonnes pour les articles suivants
- * - Filtre par catégorie via query param ?categorie=terrain|curiosite|echappees
- *
- * Mapping catégories → sections (identique à index.astro) :
- * terrain    → marketing, cybersécurité, dématérialisation, it
- * curiosite  → ia, tech
- * echappees  → voyage, lecture, culture
+ * blog/terrain.astro — Catégorie Terrain
+ * Filtre statique sur category: terrain
+ * Déposer dans : src/pages/blog/terrain.astro
  */
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 
-const categoryToSection: Record<string, string> = {
-  marketing:         'Terrain',
-  cybersécurité:     'Terrain',
-  dématérialisation: 'Terrain',
-  it:                'Terrain',
-  ia:                'Curiosité',
-  tech:              'Curiosité',
-  voyage:            'Échappées',
-  lecture:           'Échappées',
-  culture:           'Échappées',
-};
-
-const sectionToCategories: Record<string, string[]> = {
-  terrain:    ['marketing', 'cybersécurité', 'dématérialisation', 'it'],
-  curiosite:  ['ia', 'tech'],
-  echappees:  ['voyage', 'lecture', 'culture'],
-};
-
-function getSection(category?: string): string {
-  if (!category) return '';
-  return categoryToSection[category.toLowerCase()] ?? category;
-}
-
 /*
-  Récupération du filtre catégorie depuis l'URL (?categorie=terrain).
-  Si aucun filtre, on affiche tous les articles.
+  Filtre direct sur le champ category.
+  Plus besoin de mapping — on filtre sur la valeur exacte du frontmatter.
 */
-const filterParam = Astro.url.searchParams.get('categorie')?.toLowerCase() ?? '';
-const validFilters = ['terrain', 'curiosite', 'echappees'];
-const activeFilter = validFilters.includes(filterParam) ? filterParam : '';
-
-const sectionLabels: Record<string, string> = {
-  terrain:   'Terrain',
-  curiosite: 'Curiosité',
-  echappees: 'Échappées',
-};
-const pageTitle = activeFilter ? sectionLabels[activeFilter] : 'Tous les articles';
-
-/* Récupération et tri des articles */
-let allPosts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-
-/* Filtrage si catégorie active */
-if (activeFilter) {
-  const allowedCats = sectionToCategories[activeFilter] ?? [];
-  allPosts = allPosts.filter(p =>
-    allowedCats.includes(p.data.category?.toLowerCase() ?? '')
-  );
-}
+let allPosts = (await getCollection('blog'))
+  .filter(p => p.data.category === 'terrain')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featuredPost = allPosts[0];
 const otherPosts = allPosts.slice(1);
+const pageTitle = 'Terrain';
+const activeFilter = 'terrain';
 ---
 
 <MainLayout title={`${pageTitle} — Carnet de bord`}>
@@ -79,7 +29,10 @@ const otherPosts = allPosts.slice(1);
        ============================================================ -->
   <div class="page-header">
     <div class="page-header-inner">
-      <h1 class="page-title">{pageTitle}</h1>
+      <div>
+        <h1 class="page-title">{pageTitle}</h1>
+        <p class="page-desc">Marketing B2B, dématérialisation, cybersécurité — ce que je vis et pratique au quotidien dans mon métier. Des retours d'expérience concrets, sans jargon inutile.</p>
+      </div>
 
       <!-- Filtres de navigation entre sections -->
       <nav class="filter-nav" aria-label="Filtrer par section">
@@ -204,6 +157,17 @@ const otherPosts = allPosts.slice(1);
   color: var(--color-text);
   letter-spacing: -0.02em;
   line-height: 1;
+  margin-bottom: 12px;
+}
+
+/* Description sous le titre de section */
+.page-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+  max-width: 56ch;
 }
 
 /* Filtres de navigation */
@@ -243,6 +207,12 @@ const otherPosts = allPosts.slice(1);
 
 .featured-wrapper {
   border-bottom: 0.5px solid var(--color-border);
+  margin-bottom: 0;
+}
+
+/* Marge sous le featured quand il est le dernier élément */
+.featured-wrapper:last-of-type {
+  margin-bottom: 80px;
 }
 
 .featured {
@@ -357,7 +327,7 @@ const otherPosts = allPosts.slice(1);
    ============================================================ */
 
 .articles-section {
-  padding-bottom: 64px;
+  padding-bottom: 96px;
 }
 
 .articles-inner {

@@ -1,75 +1,25 @@
 ---
 /**
- * blog/index.astro — Page principale des articles
- * Light mode — juin 2026
- *
- * Structure :
- * - Article featured : photo gauche + titre/extrait droite
- * - Grille 2 colonnes pour les articles suivants
- * - Filtre par catégorie via query param ?categorie=terrain|curiosite|echappees
- *
- * Mapping catégories → sections (identique à index.astro) :
- * terrain    → marketing, cybersécurité, dématérialisation, it
- * curiosite  → ia, tech
- * echappees  → voyage, lecture, culture
+ * blog/echappees.astro — Catégorie Échappées
+ * Filtre statique sur category: echappees
+ * Déposer dans : src/pages/blog/echappees.astro
  */
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 
-const categoryToSection: Record<string, string> = {
-  marketing:         'Terrain',
-  cybersécurité:     'Terrain',
-  dématérialisation: 'Terrain',
-  it:                'Terrain',
-  ia:                'Curiosité',
-  tech:              'Curiosité',
-  voyage:            'Échappées',
-  lecture:           'Échappées',
-  culture:           'Échappées',
-};
-
-const sectionToCategories: Record<string, string[]> = {
-  terrain:    ['marketing', 'cybersécurité', 'dématérialisation', 'it'],
-  curiosite:  ['ia', 'tech'],
-  echappees:  ['voyage', 'lecture', 'culture'],
-};
-
-function getSection(category?: string): string {
-  if (!category) return '';
-  return categoryToSection[category.toLowerCase()] ?? category;
-}
-
 /*
-  Récupération du filtre catégorie depuis l'URL (?categorie=terrain).
-  Si aucun filtre, on affiche tous les articles.
+  Filtre direct sur le champ category.
+  Plus besoin de mapping — on filtre sur la valeur exacte du frontmatter.
 */
-const filterParam = Astro.url.searchParams.get('categorie')?.toLowerCase() ?? '';
-const validFilters = ['terrain', 'curiosite', 'echappees'];
-const activeFilter = validFilters.includes(filterParam) ? filterParam : '';
-
-const sectionLabels: Record<string, string> = {
-  terrain:   'Terrain',
-  curiosite: 'Curiosité',
-  echappees: 'Échappées',
-};
-const pageTitle = activeFilter ? sectionLabels[activeFilter] : 'Tous les articles';
-
-/* Récupération et tri des articles */
-let allPosts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-
-/* Filtrage si catégorie active */
-if (activeFilter) {
-  const allowedCats = sectionToCategories[activeFilter] ?? [];
-  allPosts = allPosts.filter(p =>
-    allowedCats.includes(p.data.category?.toLowerCase() ?? '')
-  );
-}
+let allPosts = (await getCollection('blog'))
+  .filter(p => p.data.category === 'echappees')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featuredPost = allPosts[0];
 const otherPosts = allPosts.slice(1);
+const pageTitle = 'Échappées';
+const activeFilter = 'echappees';
 ---
 
 <MainLayout title={`${pageTitle} — Carnet de bord`}>

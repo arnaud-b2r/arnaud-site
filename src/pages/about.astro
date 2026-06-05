@@ -1,106 +1,113 @@
 ---
 /**
  * about.astro — Page À propos
- * Design dark mode harmonisé avec la homepage et la page articles.
- * Structure : hero identité + sections prose centrées.
+ * Light mode — juin 2026
+ * Même structure que la homepage :
+ * - Hero : photo gauche, texte droite
+ * - Sections de contenu en dessous
  */
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
-<MainLayout
-  title="À propos — Arnaud Borderiou"
-  description="Responsable marketing B2B, je transforme des sujets complexes en contenus utiles. Découvrez mon parcours, mes compétences et ce qui m'anime."
->
+<MainLayout title="À propos — Carnet de bord">
 
   <!-- ============================================================
-       HERO IDENTITÉ
-       Même kicker + grand titre que les autres pages.
-       Photo/logo à droite en miroir du hero homepage.
+       HERO — même structure que la homepage
        ============================================================ -->
-  <section class="about-hero">
-    <div class="about-hero-inner">
+  <section class="hero-wrapper">
+    <div class="hero">
 
-      <div class="about-hero-left">
-        <p class="kicker">
-          <span class="kicker-dot"></span>
-          À propos
-        </p>
-        <h1>Arnaud <em>Borderiou</em></h1>
-        <p class="tagline">
-          Responsable marketing B2B — dématérialisation, IT, téléphonie, cybersécurité
-        </p>
-        <a
-          href="https://www.linkedin.com/in/arnaudborderiou/"
-          class="linkedin-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Voir mon profil LinkedIn →
-        </a>
+      <div class="hero-img">
+        <img
+          src="/images/portrait-arnaud.png"
+          alt="Portrait d'Arnaud Borderiou"
+          class="hero-photo"
+        />
       </div>
 
-      <div class="about-hero-right">
-        <div class="photo-wrap">
-          <img
-            src="/images/carnet-bord_logo.png"
-            alt="Arnaud Borderiou"
-            class="profile-img"
-          />
-        </div>
+      <div class="hero-text">
+        <p class="kicker">
+          <span class="kicker-dot"></span>
+          B2B Marketing · Angers
+        </p>
+        <h1 class="hero-title">Arnaud<br><em>Borderiou</em></h1>
+        <p class="hero-sub">
+          Marketeur B2B depuis 6 ans. Curieux de nature, attentif aux transformations que l'IA impose à nos métiers. Ce site est mon espace pour penser à voix haute.
+        </p>
       </div>
 
     </div>
   </section>
 
   <!-- ============================================================
-       CONTENU PROSE
-       Trois sections + signature, largeur contrainte pour la lisibilité.
+       CONTENU — sections biographiques
        ============================================================ -->
   <div class="about-content">
 
-    <section class="about-section">
-      <h2>Ce que je fais</h2>
-      <p>
-        Je travaille dans le marketing B2B depuis assez longtemps pour avoir vu l'essor des réseaux sociaux,
-        la montée de la data et l'irruption de l'IA — trois révolutions qui ont chacune redistribué les cartes du métier.
-      </p>
-      <p>
-        Aujourd'hui, j'exerce dans une entreprise spécialisée dans les solutions aux professionnels :
-        dématérialisation des documents, informatique d'entreprise, téléphonie et cybersécurité.
-        Mon quotidien, c'est aider des équipes commerciales à mieux vendre, produire des contenus utiles,
-        et penser des stratégies adaptées à des acheteurs professionnels qui n'ont ni le temps ni la patience
-        d'être mal adressés.
-      </p>
-      <p>
-        Ce qui me distingue, c'est ma capacité à rendre lisibles des sujets techniques et à construire
-        des contenus qui servent à nos commerciaux plutôt que de rester dans les tiroirs. Et ce n'est pas facile.
-      </p>
-    </section>
+    <!-- Section : Qui je suis -->
+    <div class="about-section">
+      <div class="about-label">
+        <span class="label-text">Qui je suis</span>
+      </div>
+      <div class="about-body">
+        <p>
+          Je travaille en marketing B2B depuis 2018, principalement dans des secteurs techniques : dématérialisation, IT, téléphonie, cybersécurité. Mon quotidien, c'est construire des stratégies de contenu, comprendre les cycles de vente longs, et trouver les bons mots pour des sujets que peu de gens trouvent naturellement sexy.
+        </p>
+        <p>
+          Ce qui m'intéresse dans ce métier, c'est la tension entre la rigueur technique et la capacité à raconter des histoires. Un bon contenu B2B, c'est un contenu qui respecte l'intelligence du lecteur tout en lui donnant envie de continuer.
+        </p>
+      </div>
+    </div>
 
-    <section class="about-section">
-      <h2>Pourquoi ce site</h2>
-      <p>
-        Avec ce site j'essaie de croiser les regards, suivre l'actualité tech et IA avec ma vision,
-        et partager ce qui me semble réellement intéressant.
-      </p>
-      <p>
-        Vous trouverez ici des réflexions professionnelles, mais aussi et surtout des détours plus personnels —
-        voyages, lectures et mes autres passions.
-      </p>
-    </section>
+    <!-- Section : Pourquoi ce carnet -->
+    <div class="about-section">
+      <div class="about-label">
+        <span class="label-text">Pourquoi ce carnet</span>
+      </div>
+      <div class="about-body">
+        <p>
+          LinkedIn est utile, mais c'est une scène. On y joue un rôle, on y polit les angles, on y évite les doutes. Ce carnet, c'est autre chose : un endroit pour noter ce que j'apprends, ce qui me questionne, ce qui me plaît.
+        </p>
+        <p>
+          Il couvre mon univers professionnel — marketing, tech, IA — mais aussi ce qui déborde : les lectures, les voyages, les randonnées. Ce n'est pas un portfolio. C'est un journal de bord.
+        </p>
+      </div>
+    </div>
 
-    <section class="about-section">
-      <h2>En dehors du bureau</h2>
-      <p>
-        Je profite de la vie : je lis beaucoup — des romans (Murakami, Ken Follett, la série Agatha Raisin
-        et beaucoup d'autres choses), des BD franco-belges et des mangas, deux cultures graphiques tellement passionnantes.
-        Je marche, je randonne, je voyage autant que possible — le Japon, l'Angleterre, la Scandinavie figurent
-        parmi mes dernières destinations. Et je suis de près l'actualité tech, pas comme un geek,
-        mais comme quelqu'un qui veut comprendre ce qui change vraiment dans nos façons de travailler.
-      </p>
-    </section>
+    <!-- Section : Ce que je suis en train d'explorer -->
+    <div class="about-section">
+      <div class="about-label">
+        <span class="label-text">En ce moment</span>
+      </div>
+      <div class="about-body">
+        <p>
+          Je suis de près les usages concrets de l'IA dans les équipes marketing — pas les promesses des vendeurs de formation, mais ce que les gens utilisent vraiment, tous les jours. Je construis aussi ce site pas à pas, en apprenant Astro.js en chemin.
+        </p>
+        <p>
+          Côté lectures, j'alterne entre des ouvrages sur la stratégie, des essais sur la technologie et quelques romans qui n'ont rien à voir avec tout ça — ce qui est peut-être le meilleur moyen de garder les idées fraîches.
+        </p>
+      </div>
+    </div>
 
-    <p class="signature">— Arnaud Borderiou, Angers</p>
+    <!-- Section : Contact -->
+    <div class="about-section about-section--last">
+      <div class="about-label">
+        <span class="label-text">Contact</span>
+      </div>
+      <div class="about-body">
+        <p>
+          La meilleure façon de me joindre reste LinkedIn. Je lis tous les messages, je réponds à la plupart.
+        </p>
+        <div class="about-links">
+          <a href="https://www.linkedin.com/in/arnaud-borderiou/" target="_blank" rel="noopener noreferrer" class="about-link">
+            LinkedIn →
+          </a>
+          <a href="/rss.xml" class="about-link about-link--subtle">
+            RSS →
+          </a>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -108,230 +115,222 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 <style>
 /* ============================================================
-   HERO
+   HERO — identique à la homepage
    ============================================================ */
 
-.about-hero {
+.hero-wrapper {
   border-bottom: 0.5px solid var(--color-border);
 }
 
-.about-hero-inner {
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   max-width: var(--content-width);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  min-height: 320px;
 }
 
-/* Colonne gauche */
-.about-hero-left {
-  padding: 52px 48px 52px 40px;
+.hero-img {
+  overflow: hidden;
+  background: var(--color-bg-subtle);
+  position: relative;
+}
+
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.hero-text {
+  padding: 40px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
-  border-right: 0.5px solid var(--color-border);
+  border-left: 0.5px solid var(--color-border);
 }
 
 .kicker {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-faint);
-  margin: 0;
+  margin-bottom: 20px;
 }
 
 .kicker-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--color-accent);
   flex-shrink: 0;
 }
 
-.about-hero-left h1 {
+.hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
   font-weight: 900;
   line-height: 1.0;
   letter-spacing: -0.02em;
   color: var(--color-text);
-  margin: 0;
+  margin-bottom: 20px;
 }
 
-.about-hero-left h1 em {
+.hero-title em {
   color: var(--color-accent);
   font-style: italic;
 }
 
-.tagline {
+.hero-sub {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 300;
   line-height: var(--leading-normal);
   color: var(--color-text-muted);
-  margin: 0;
-  max-width: 44ch;
-}
-
-.linkedin-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-bg);
-  background: var(--color-accent);
-  padding: 11px 22px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  width: fit-content;
-  transition: opacity 0.15s ease;
-}
-
-.linkedin-btn:hover {
-  opacity: 0.88;
-  text-decoration: none;
-}
-
-/* Colonne droite — photo */
-.about-hero-right {
-  background: var(--color-bg-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.photo-wrap {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: #1A3A4A;
-  border: 0.5px solid var(--color-border-mid);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.profile-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 52ch;
+  border-left: 1.5px solid rgba(232, 113, 74, 0.35);
+  padding-left: 14px;
 }
 
 /* ============================================================
-   CONTENU PROSE
-   Largeur contrainte pour la lisibilité (--prose-width = 720px).
-   Centré dans la page avec padding latéral.
+   CONTENU
    ============================================================ */
 
 .about-content {
-  max-width: var(--prose-width);
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 56px 40px 80px;
-}
-
-.about-section {
-  margin-bottom: 48px;
-  padding-bottom: 48px;
-  border-bottom: 0.5px solid var(--color-border);
-}
-
-.about-section:last-of-type {
-  border-bottom: none;
-  margin-bottom: 32px;
-  padding-bottom: 0;
-}
-
-.about-section h2 {
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-text);
-  margin: 0 0 20px;
-  line-height: var(--leading-tight);
 }
 
 /*
-  Tiret accent avant chaque titre de section —
-  cohérent avec le section-label de la homepage.
+  Chaque section : label à gauche (1/3), contenu à droite (2/3).
+  Séparées par une bordure fine en bas.
+  Même logique de grille que les magazines éditoriaux.
 */
-.about-section h2::before {
-  content: '';
-  display: inline-block;
-  width: 18px;
-  height: 1.5px;
-  background: var(--color-accent);
-  vertical-align: middle;
-  margin-right: 10px;
-  margin-bottom: 2px;
+.about-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0;
+  border-bottom: 0.5px solid var(--color-border);
 }
 
-.about-section p {
+.about-section--last {
+  border-bottom: none;
+}
+
+.about-label {
+  padding: 48px var(--content-padding) 48px 40px;
+  border-right: 0.5px solid var(--color-border);
+  display: flex;
+  align-items: flex-start;
+}
+
+.label-text {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  /* Tiret terracotta avant le label */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label-text::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.about-body {
+  padding: 48px 48px 48px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-body p {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: 300;
-  line-height: var(--leading-loose);
+  line-height: var(--leading-normal);
   color: var(--color-text-muted);
-  margin: 0 0 16px;
+  max-width: 66ch;
 }
 
-.about-section p:last-child {
-  margin-bottom: 0;
+/* Liens de contact */
+.about-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 8px;
 }
 
-.signature {
-  font-family: var(--font-serif);
-  font-style: italic;
+.about-link {
+  font-family: var(--font-sans);
   font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-text);
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.about-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  text-decoration: none;
+}
+
+.about-link--subtle {
   color: var(--color-text-faint);
-  margin: 0;
+  border-color: var(--color-border);
+  font-weight: 400;
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 
-@media (max-width: 768px) {
-  .about-hero-inner {
+@media (max-width: 900px) {
+  .hero {
     grid-template-columns: 1fr;
-    min-height: auto;
   }
 
-  .about-hero-left {
-    padding: 40px 24px;
+  .hero-img {
+    height: 280px;
+  }
+
+  .hero-text {
+    padding: 40px var(--content-padding);
+    border-left: none;
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+
+  .about-label {
+    padding: 32px var(--content-padding) 16px;
     border-right: none;
     border-bottom: 0.5px solid var(--color-border);
   }
 
-  /* Photo masquée sur mobile — le texte suffit */
-  .about-hero-right {
-    display: none;
-  }
-
-  .about-content {
-    padding: 40px 24px 60px;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-hero-left h1 {
-    font-size: 2rem;
-  }
-
-  .about-content {
-    padding: 32px 20px 48px;
+  .about-body {
+    padding: 24px var(--content-padding) 40px;
   }
 }
 </style>

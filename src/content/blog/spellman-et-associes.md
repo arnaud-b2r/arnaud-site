@@ -1,9 +1,10 @@
 ---
 title: "Spellman & Associés, Lisa Lutz"
-description: Suivez les aventures d’une famille de détectives atypiques, chez qui les coups bas et les fourberies sont une spécialité.
+description: "Suivez les aventures d'une famille de détectives atypiques, chez qui les coups bas et les fourberies sont une spécialité."
 pubDate: 2026-04-17
+category: echappees
+subcategory: lecture
 heroImage: "/images/spellman-et-associe.png"
-category: "Lecture"
 ---
 
 Suivez les aventures d’une famille de détectives atypiques, chez qui les coups bas et les fourberies sont une spécialité. Plongez dans ce roman plein d’humour de Lisa Lutz : vous ne serez pas déçu.
