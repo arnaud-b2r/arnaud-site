@@ -7,12 +7,8 @@ subcategory: ia
 heroImage: "/images/hero_ia_invisible_v2.svg"
 ---
 
-## L’IA, vous l’utilisez déjà sans le savoir
-- Déverrouiller son téléphone d’un simple regard.
-- Éviter les bouchons grâce à son GPS sans même lui demander.
-- Tomber sur la série parfaite, comme par hasard, sur Netflix.
-
-Rien de spécial en apparence… Pourtant, à chaque fois, une intelligence artificielle (IA) a travaillé en coulisses pour vous simplifier la vie.
+L’IA, vous l’utilisez déjà sans le savoir
+Déverrouiller son téléphone d’un simple regard. Éviter les bouchons grâce à son GPS sans même lui demander. Tomber sur la série parfaite, comme par hasard, sur Netflix. Rien de spécial en apparence… Pourtant, à chaque fois, une intelligence artificielle (IA) a travaillé en coulisses pour vous simplifier la vie.
 
 <img src="/images/hero_ia_invisible.svg" alt="Trois exemples d'IA discrète dans le quotidien : déverrouillage facial, GPS, recommandation Netflix" style="width: 100%; margin: 2rem 0; display: block;" />
 
